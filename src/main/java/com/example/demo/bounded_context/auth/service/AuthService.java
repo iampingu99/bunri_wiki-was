@@ -80,11 +80,9 @@ public class AuthService {
      * 인증 메서드
      */
     public User authenticate(SignInAccountRequest request){
-        //loadUserByUsername 을 사용하기 위한 id
-        Long id = accountService.read(request.getAccountName()).getId();
         //인증 객체 셍성 : Authentication 구현 객체 UsernamePasswordAuthenticationToken
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(id, request.getPassword());
+                new UsernamePasswordAuthenticationToken(request.getAccountName(), request.getPassword());
 
         //인증 : CustomUserDetailsService - loadUserByUsername 사용
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);

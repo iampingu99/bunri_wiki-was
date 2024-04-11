@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final RefreshTokenService refreshTokenService;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final BlacklistTokenService blacklistTokenService;
 
     public Account read(String accountName){ //loadByUsername
@@ -42,7 +41,7 @@ public class AccountService {
             throw new CustomException(ExceptionCode.INVALID_SIGN_OUT);
         }
         blacklistTokenService.create(accessToken);
-        refreshTokenRepository.delete(refresh);
+        refreshTokenService.remove(refresh.getAccountId());
     }
 
     /**
@@ -52,11 +51,11 @@ public class AccountService {
      */
     public void withdrawal(AccessToken accessToken, String refreshToken){
         RefreshToken refresh = refreshTokenService.read(refreshToken);
-        if(refresh.getUserId() != accessToken.getAccountId()){
+        if(refresh.getAccountId() != accessToken.getAccountId()){
             throw new CustomException(ExceptionCode.INVALID_SIGN_OUT);
         }
-        refreshTokenRepository.delete(refresh);
-        remove(refresh.getUserId());
+        refreshTokenService.remove(refresh.getAccountId());
+        remove(refresh.getAccountId());
     }
 
     public Account update(Long accountId, AccountInfoRequest request){

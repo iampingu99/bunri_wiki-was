@@ -13,13 +13,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class RefreshToken {
     @Id
-    private Long userId;
+    private Long accountId;
     private String token;
     private Date timeToLive;
 
     @Builder
-    public RefreshToken(Long userId, String token, Date timeToLive) {
-        this.userId = userId;
+    public RefreshToken(Long accountId, String token, Date timeToLive) {
+        this.accountId = accountId;
         this.token = token;
         this.timeToLive = timeToLive;
     }

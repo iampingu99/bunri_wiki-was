@@ -64,7 +64,7 @@ public class AuthService {
      */
     public TokenResponse reIssueToken(String token){
         RefreshToken refreshToken = refreshTokenService.reIssueRefreshToken(token);
-        String accessToken = jwtProvider.generatorAccessToken(refreshToken.getUserId());
+        String accessToken = jwtProvider.generatorAccessToken(refreshToken.getAccountId());
 
         return TokenResponse.builder()
                 .accessToken(accessToken)

@@ -41,7 +41,7 @@ public class AccountService {
      */
     public void signOut(AccessToken accessToken, String refreshToken){
         RefreshToken refresh = refreshTokenService.read(refreshToken);
-        if(refresh.getUserId() != accessToken.getAccountId()){
+        if(refresh.getAccountId() != accessToken.getAccountId()){
             throw new CustomException(ExceptionCode.INVALID_SIGN_OUT);
         }
         blacklistTokenService.create(accessToken);

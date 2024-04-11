@@ -20,6 +20,17 @@ public class RefreshTokenService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.TOKEN_NOT_FOUND));
     }
 
+    public RefreshToken read(Long accountId){
+        return refreshTokenRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.TOKEN_NOT_FOUND));
+    }
+
+    public RefreshToken remove(Long accountId){
+        RefreshToken refreshToken = read(accountId);
+        refreshTokenRepository.delete(refreshToken);
+        return refreshToken;
+    }
+
     public void isExpired(RefreshToken refreshToken){
         if(refreshToken.getTimeToLive().before(new Date())){
             throw new CustomException(ExceptionCode.EXPIRE_REFRESH_TOKEN);
@@ -32,7 +43,7 @@ public class RefreshTokenService {
     public RefreshToken issueRefreshToken(Long id){
         Date now = new Date();
         final RefreshToken refreshToken = RefreshToken.builder()
-                .userId(id)
+                .accountId(id)
                 .token(UUID.randomUUID().toString())
                 .timeToLive(new Date(now.getTime() + jwtProperties.getRefreshExpiration()))
                 .build();

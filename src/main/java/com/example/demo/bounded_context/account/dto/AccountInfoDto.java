@@ -6,12 +6,14 @@ import lombok.Getter;
 
 @Getter
 public class AccountInfoDto {
+    String accountName;
     String nickname;
     Double latitude;
     Double longitude;
 
     @Builder
-    public AccountInfoDto(String nickname, Double latitude, Double longitude) {
+    public AccountInfoDto(String accountName, String nickname, Double latitude, Double longitude) {
+        this.accountName = accountName;
         this.nickname = nickname;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -19,6 +21,7 @@ public class AccountInfoDto {
 
     public static AccountInfoDto of(Account account){
         return AccountInfoDto.builder()
+                .accountName(account.getAccountName())
                 .nickname(account.getNickname())
                 .latitude(account.getLatitude())
                 .longitude(account.getLongitude())

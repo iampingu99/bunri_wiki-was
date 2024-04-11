@@ -52,7 +52,7 @@ public class AccountService {
     public void withdrawal(AccessToken accessToken, String refreshToken){
         RefreshToken refresh = refreshTokenService.read(refreshToken);
         if(refresh.getAccountId() != accessToken.getAccountId()){
-            throw new CustomException(ExceptionCode.INVALID_SIGN_OUT);
+            throw new CustomException(ExceptionCode.INVALID_WITHDRAWAL);
         }
         refreshTokenService.remove(refresh.getAccountId());
         remove(refresh.getAccountId());

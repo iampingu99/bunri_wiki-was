@@ -23,6 +23,7 @@ public enum ExceptionCode {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "유효하지 않은 비밀번호 입니다."),
     BLACK_LIST(HttpStatus.BAD_REQUEST, "무효화된 토큰입니다."),
     INVALID_SIGN_OUT(HttpStatus.BAD_REQUEST, "비정상적인 로그아웃 시도입니다."),
+    INVALID_WITHDRAWAL(HttpStatus.BAD_REQUEST, "비정상적인 회원탈퇴 시도입니다."),
 
     DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "중복된 이름이 존재합니다."),
     EMPTY_LOCATION(HttpStatus.BAD_REQUEST, "위치정보가 존재하지 않습니다."),

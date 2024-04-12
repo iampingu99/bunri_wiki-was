@@ -34,7 +34,7 @@ public class SecurityConfig {
     private final AccountService accountService;
 
     @Value("${server.front}")
-    private String cors;
+    private String corsUrl;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +43,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("cors"));
+                        config.setAllowedOrigins(Collections.singletonList(corsUrl));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowedHeaders(Collections.singletonList("*"));
                         config.setExposedHeaders(Collections.singletonList("*"));

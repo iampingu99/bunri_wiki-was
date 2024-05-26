@@ -66,4 +66,13 @@ public class QuestionBoard extends BaseTimeEntity {
         this.adoptedComment = comment;
         this.adopted = true;
     }
+
+    public void recommend(){
+        this.recommend++;
+    }
+
+    public void unRecommend(){
+        this.recommend--;
+    }
+
 }

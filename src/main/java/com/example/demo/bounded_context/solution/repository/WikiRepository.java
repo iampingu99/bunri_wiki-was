@@ -12,6 +12,6 @@ public interface WikiRepository extends JpaRepository<Wiki, Long> {
 
     public Boolean existsByWriterAndWasteAndIsAcceptFalse(Account writer, Waste waste);
 
-    @Query("select w from Wiki w join fetch w.waste where w.id = :id")
+    @Query("select w from Wiki w join fetch w.writer where w.id = :id")
     public Wiki findFetchById(Long id);
 }

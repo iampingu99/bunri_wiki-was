@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/recommendBoard")
+@RequestMapping("/api/questionBoard/recommend")
 public class RecommendBoardController {
     private final RecommendBoardService recommendBoardService;
     private final RecommendBoardRepository recommendBoardRepository;
 
     @PostMapping("/{questionBoardId}") // - 추천
     @Operation(summary = "추천및 추천취소", description = "추천/이미 추천되어있을시 추천취소")
-    public ResponseEntity<?> createQuestionBoard(@AuthorizationHeader Long accountId,
+    public ResponseEntity<?> recommend(@AuthorizationHeader Long accountId,
                                                  @PathVariable Long questionBoardId){
         Long recommendId = recommendBoardRepository.findByBoardAndAccount(questionBoardId, accountId);
         if(recommendId!=null)

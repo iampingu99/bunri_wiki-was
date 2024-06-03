@@ -5,6 +5,7 @@ import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.account.service.AccountService;
 import com.example.demo.bounded_context.questionComment.entity.QuestionComment;
 import com.example.demo.bounded_context.questionComment.service.QuestionCommentService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ public class QuestionCommentController {
     private final AccountService accountService;
 
     @PostMapping("/{questionBoardId}/create") // - 로그인한 사용자는 댓글을 작성할 수 있다
-    public ResponseEntity<?> createQuestionBoard(@PathVariable Long questionBoardId,
+    @Operation(summary = "댓글 작성", description = "로그인시 Q&A 게시글에 댓글 작성 가능")
+    public ResponseEntity<?> create(@PathVariable Long questionBoardId,
                                                  @AuthorizationHeader Long id,
                                                  @RequestBody String content){
         Account writer = accountService.read(id);; // writer가 현재 누구
@@ -27,7 +29,8 @@ public class QuestionCommentController {
     }
 
     @PutMapping("/update/{questionCommentId}") // - 댓글 업데이트
-    public ResponseEntity<?> updateQuestionComment(@AuthorizationHeader Long id,
+    @Operation(summary = "댓글 수정", description = "자신이 작성한 댓글 수정")
+    public ResponseEntity<?> update(@AuthorizationHeader Long id,
                                                    @PathVariable Long questionCommentId,
                                                    @RequestBody String content) {
         Account user = accountService.read(id);
@@ -42,7 +45,8 @@ public class QuestionCommentController {
     }
 
     @GetMapping("/delete/{questionCommentId}")  // - 댓글 삭제
-    public ResponseEntity<?> deleteQuestionComment(@AuthorizationHeader Long id,
+    @Operation(summary = "댓글 삭제", description = "자신이 작성한 댓글 삭제")
+    public ResponseEntity<?> delete(@AuthorizationHeader Long id,
                                                    @PathVariable Long questionCommentId) {
         Account user = accountService.read(id);
         QuestionComment questionComment=questionCommentService.read(questionCommentId);

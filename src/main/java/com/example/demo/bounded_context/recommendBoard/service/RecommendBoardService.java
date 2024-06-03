@@ -23,7 +23,7 @@ public class RecommendBoardService {
     public void create(Long questionBoardId, Long accountId){
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId)
                 .orElseThrow(() -> new IllegalArgumentException("QUESTIONBOARD_NOT_FOUND"));
-        Account account = accountService.read(accountId);
+        Account account = accountService.findByAccountId(accountId);
 
         RecommendBoard recommendBoard = RecommendBoard.builder()
                 .account(account)

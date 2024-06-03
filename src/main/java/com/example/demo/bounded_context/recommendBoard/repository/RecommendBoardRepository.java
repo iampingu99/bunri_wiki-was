@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecommendBoardRepository extends JpaRepository<RecommendBoard, Long> {
     @Query(
-            value = "SELECT id FROM RecommendBoard WHERE BOARD_ID = :boardId AND ACCOUNT_ID = :accountId  ",
+            value = "SELECT id FROM recommend_board WHERE board_id = :boardId AND account_id = :accountId  ",
                     nativeQuery = true
     )
     Long findByBoardAndAccount(@Param(value="boardId") Long boardId,

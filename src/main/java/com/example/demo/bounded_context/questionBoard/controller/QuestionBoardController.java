@@ -7,6 +7,7 @@ import com.example.demo.bounded_context.questionBoard.dto.CreateQuestionBoardDto
 import com.example.demo.bounded_context.questionBoard.dto.ReadQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.dto.UpdateQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.service.QuestionBoardService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,20 @@ public class QuestionBoardController {
     private final AccountService accountService;
 
     @PostMapping("/create") // - 로그인한 사용자는 게시글을 작성할 수 있다
-    public ResponseEntity<?> createQuestionBoard(@AuthorizationHeader Long id,
-                                                 @RequestBody CreateQuestionBoardDto createQuestionBoardDto){
+    @Operation(summary = "Q&A 게시글 생성", description = "로그인시 Q&A 게시글 생성 가능")
+    public ResponseEntity<?> create(@AuthorizationHeader Long id,
+                                    @RequestBody CreateQuestionBoardDto createQuestionBoardDto){
         Account writer = accountService.read(id);; // writer가 현재 누구
         questionBoardService.create(createQuestionBoardDto, writer);
 
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok("게시글 생성 완료");
     }
 
     // 게시글 목록(리스트) 보기(페이징 필요?)
 
     @GetMapping("/read/{questionBoardId}") // - 게시글 자세히 보기, (댓글-페이지네이션 필요?)
-    public ResponseEntity<ReadQuestionBoardDto> readQuestionBoardById(@PathVariable Long questionBoardId) {
+    @Operation(summary = "Q&A 게시글 불러오기", description = "댓글을 포함한 게시글 부름")
+    public ResponseEntity<ReadQuestionBoardDto> readId(@PathVariable Long questionBoardId) {
         ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
 
         return ResponseEntity.ok(readQuestionBoardDto);
@@ -39,9 +42,10 @@ public class QuestionBoardController {
 
 
     @PutMapping("/update/{questionBoardId}") // - 게시글 업데이트
-    public ResponseEntity<?> updateQuestionBoard(@AuthorizationHeader Long id,
-                                                 @PathVariable Long questionBoardId,
-                                                 @RequestBody UpdateQuestionBoardDto updateQuestionBoardDto) {
+    @Operation(summary = "Q&A 게시글 수정", description = "자신이 작성한 Q&A 게시글 수정")
+    public ResponseEntity<?> update(@AuthorizationHeader Long id,
+                                    @PathVariable Long questionBoardId,
+                                    @RequestBody UpdateQuestionBoardDto updateQuestionBoardDto) {
         Account user = accountService.read(id);
         ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
         if(readQuestionBoardDto.getWriter()==user){
@@ -54,7 +58,8 @@ public class QuestionBoardController {
     }
 
     @GetMapping("/delete/{questionBoardId}")  // - 게시글 삭제
-    public ResponseEntity<?> deleteQuestionBoard(@AuthorizationHeader Long id, @PathVariable Long questionBoardId) {
+    @Operation(summary = "Q&A 게시글 삭제", description = "자신이 작성한 Q&A 게시글 삭제")
+    public ResponseEntity<?> delete(@AuthorizationHeader Long id, @PathVariable Long questionBoardId) {
         Account user = accountService.read(id);
         ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
         if(readQuestionBoardDto.getWriter()==user){
@@ -67,9 +72,10 @@ public class QuestionBoardController {
     }
 
     @PostMapping("/read/{questionBoardId}/{questionCommentId}") // - 댓글 채택
-    public ResponseEntity<?> adoptingQuestionBoardComment(@AuthorizationHeader Long id,
-                                                          @PathVariable Long questionBoardId,
-                                                          @PathVariable Long questionCommentId){
+    @Operation(summary = "Q&A 게시글 댓글 채택", description = "자신이 작성한 Q&A 게시글에서 댓글 채택/이미 채택시 불가능")
+    public ResponseEntity<?> adopting(@AuthorizationHeader Long id,
+                                      @PathVariable Long questionBoardId,
+                                      @PathVariable Long questionCommentId){
         Account user = accountService.read(id);
         ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
         if(readQuestionBoardDto.getWriter()==user&& !readQuestionBoardDto.isAdopted()){

@@ -4,13 +4,19 @@ import com.example.demo.base.Resolver.AuthorizationHeader;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.account.service.AccountService;
 import com.example.demo.bounded_context.questionBoard.dto.CreateQuestionBoardDto;
+import com.example.demo.bounded_context.questionBoard.dto.PageQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.dto.ReadQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.dto.UpdateQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.service.QuestionBoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +45,14 @@ public class QuestionBoardController {
         return ResponseEntity.ok(readQuestionBoardDto);
     }
 
+    // @PageableDefault(page = 1) : page는 기본으로 1페이지를 보여준다.
+    @GetMapping("/read/paging")
+    @Operation(summary = "Q&A 게시글 페이징", description = "http://localhost:8080/api/questionBoard/read/paging?page=번호(1~")
+    public ResponseEntity<?> readPage(@PageableDefault(page = 1) Pageable pageable) {
+        Page<PageQuestionBoardDto> boardPages = questionBoardService.paging(pageable);
 
+        return ResponseEntity.ok(boardPages);
+    }
 
     @PutMapping("/update/{questionBoardId}") // - 게시글 업데이트
     @Operation(summary = "Q&A 게시글 수정", description = "자신이 작성한 Q&A 게시글 수정")

@@ -45,14 +45,18 @@ public class QuestionBoard extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer recommend; //추천수, 추천기능을 위해선 엔티티를 하나 더 작성해야한다고 생각,,(멤버,보드 관계엔티티로써)
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private Integer view; //추천수, 추천기능을 위해선 엔티티를 하나 더 작성해야한다고 생각,,(멤버,보드 관계엔티티로써)
+
     @Builder
-    public QuestionBoard(String title, String content, Integer recommend, Account writer, String imageUrl, Boolean adopted){
+    public QuestionBoard(String title, String content, Integer recommend, Account writer, String imageUrl, Boolean adopted , Integer view){
         this.title = title;
         this.content = content;
         this.recommend = recommend;
         this.writer = writer;
         this.imageUrl = imageUrl;
         this.adopted = adopted;
+        this.view = view;
     }
 
     public void update(UpdateQuestionBoardDto updateQuestionBoardDto) {
@@ -73,6 +77,10 @@ public class QuestionBoard extends BaseTimeEntity {
 
     public void unRecommend(){
         this.recommend--;
+    }
+
+    public void view(){
+        this.view++;
     }
 
 }

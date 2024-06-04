@@ -3,6 +3,7 @@ package com.example.demo.bounded_context.questionBoard.service;
 
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.questionBoard.dto.CreateQuestionBoardDto;
+import com.example.demo.bounded_context.questionBoard.dto.PageQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.dto.ReadQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.dto.UpdateQuestionBoardDto;
 import com.example.demo.bounded_context.questionBoard.entity.QuestionBoard;
@@ -10,8 +11,14 @@ import com.example.demo.bounded_context.questionBoard.repository.QuestionBoardRe
 import com.example.demo.bounded_context.questionComment.entity.QuestionComment;
 import com.example.demo.bounded_context.questionComment.repository.QuestionCommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +36,7 @@ public class QuestionBoardService {
                 .recommend(0)
                 .adopted(false)
                 .writer(writer)
+                .view(0)
                 .build();
 
         questionBoardRepository.save(questionBoard);
@@ -40,7 +48,13 @@ public class QuestionBoardService {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId)
                 .orElseThrow(() -> new IllegalArgumentException("QUESTIONBOARD_NOT_FOUND"));
 
+        questionBoard.view();
         return new ReadQuestionBoardDto(questionBoard);
+    }
+
+    @Transactional
+    public List<QuestionBoard> readAll(){
+        return questionBoardRepository.findAll();
     }
 
     //u
@@ -71,4 +85,15 @@ public class QuestionBoardService {
 
         questionBoard.adopting(comment);
     }
+
+    public Page<PageQuestionBoardDto> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1; // page 위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 10; // 한페이지에 보여줄 글 개수
+
+        Page<QuestionBoard> questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        return questionBoardPages.map(
+                PageQuestionBoardDto::new);
+    }
+
 }

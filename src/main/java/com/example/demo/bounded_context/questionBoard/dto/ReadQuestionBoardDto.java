@@ -21,6 +21,8 @@ public class ReadQuestionBoardDto {
 
     private Integer recommend;
 
+    private Integer view;
+
     private Account writer;
 
     private String imageUrl;
@@ -39,6 +41,7 @@ public class ReadQuestionBoardDto {
         this.adopted=questionBoard.isAdopted();
         this.comments=questionBoard.getComments().stream().map(QuestionCommentResponseDto::new).collect(Collectors.toList());
         this.adoptedComment=questionBoard.getAdoptedComment();
+        this.view=questionBoard.getView();
     }
 
 

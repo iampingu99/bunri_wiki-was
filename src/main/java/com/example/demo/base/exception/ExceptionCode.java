@@ -27,7 +27,11 @@ public enum ExceptionCode {
 
     DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "중복된 이름이 존재합니다."),
     EMPTY_LOCATION(HttpStatus.BAD_REQUEST, "위치정보가 존재하지 않습니다."),
-    EMPTY_SOLUTION(HttpStatus.BAD_REQUEST, "배출방법이 존재하지 않습니다.");
+    EMPTY_SOLUTION(HttpStatus.BAD_REQUEST, "배출방법이 존재하지 않습니다."),
+    EMPTY_WIKI(HttpStatus.BAD_REQUEST, "위키가 존재하지 않습니다."),
+    WASTE_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "해당 폐기물 정보를 찾을 수 없습니다."),
+    TAG_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "해당 태그 정보를 찾을 수 없습니다."),
+    EXIST_WIKI(HttpStatus.INTERNAL_SERVER_ERROR, "사용자가 작성한 검토중인 위키가 존재합니다.");
 
     private HttpStatus status;
     private String message;

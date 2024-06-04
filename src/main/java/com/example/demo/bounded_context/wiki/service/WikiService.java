@@ -26,36 +26,48 @@ public class WikiService {
     private final WasteService wasteService;
 
     @Transactional(readOnly = true)
-    public Wiki findById(Long wikiId){
+    public Wiki findByWikiId(Long wikiId){
+        log.trace("select proxy wiki by id");
         return wikiRepository.findById(wikiId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.EMPTY_WIKI));
     }
 
     @Transactional(readOnly = true)
-    public Wiki fetchFindById(Long wikiId){
-        log.info("select from Wiki join Account");
-        return wikiRepository.findFetchById(wikiId);
+    public Wiki findFetchByWikiId(Long wikiId){
+        log.trace("select fetch wiki by id");
+        return wikiRepository.findFetchById(wikiId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.EMPTY_WIKI));
     }
 
     @Transactional(readOnly = true)
     public void isExistNonAccept(Account writer, Waste waste){
-        log.info("select from Wiki join Waste");
+        log.info("보류중인 위키 존재 검사");
         if(wikiRepository.existsPending(writer.getId(), waste.getId()).isPresent()){
             throw new CustomException(ExceptionCode.EXIST_WIKI);
         };
     }
 
     @Transactional(readOnly = true)
+    public Wiki verifyWikiAuthor(Long userId, Long wikiId){
+        log.info("위키 작성자 검사");
+        Wiki wiki = findByWikiId(wikiId);
+        if(!wiki.getWriter().getId().equals(userId))
+            throw new CustomException(ExceptionCode.INVALID_WIKI_WRITER);
+        return wiki;
+    }
+
+    @Transactional(readOnly = true)
     public WikiCompareResponse read(Long wikiId){
-        Wiki foundWiki = fetchFindById(wikiId);
-        WikiResponse origin = foundWiki.getParent() == null ? null : WikiResponse.fromEntity(foundWiki.getParent());
+        log.info("위키 정보 조회");
+        Wiki foundWiki = findFetchByWikiId(wikiId);
+        WikiResponse origin = foundWiki.getOriginal() == null ? null : WikiResponse.fromEntity(foundWiki.getOriginal());
         WikiResponse modified = WikiResponse.fromEntity(foundWiki);
         return WikiCompareResponse.of(origin, modified);
     }
 
     @Transactional
     public Wiki create(Account writer, Waste waste, WikiRequest request){
-        log.info("위키 생성");
+        log.info("위키 요청 생성");
         isExistNonAccept(writer, waste);
         Optional<Wiki> parentWiki = wikiRepository.findByRecent(waste.getId());
         Wiki wiki = request.toEntity(writer, waste, parentWiki.orElse(null));
@@ -64,30 +76,21 @@ public class WikiService {
 
     @Transactional
     public void delete(Long userId, Long wikiId){
-        log.info("위키 삭제");
+        log.info("위키 요청 삭제");
         Wiki foundWiki = verifyWikiAuthor(userId, wikiId);
         if(foundWiki.getWikiState() != WikiState.PENDING){
-            throw new IllegalArgumentException("반영 및 거부된 위키는 삭제할 수 없습니다.");
+            throw new CustomException(ExceptionCode.NOT_PENDING_WIKI);
         }
         wikiRepository.delete(foundWiki);
     }
 
-    @Transactional(readOnly = true)
-    public Wiki verifyWikiAuthor(Long userId, Long wikiId){
-        log.info("위키 작성자 검사");
-        Wiki wiki = findById(wikiId);
-        if(!wiki.getWriter().getId().equals(userId))
-            throw new IllegalArgumentException("해당 위키의 작성자가 아닙니다.");
-        return wiki;
-    }
-
     /**
-     * delete insert 여러번 문제 수정 필요
+     * [] delete insert update 여러번 문제 수정 필요
      */
     @Transactional
     public void accept(Long wikiId){
-        log.info("위키 반영");
-        Wiki wiki = fetchFindById(wikiId);
+        log.info("위키 요청 반영");
+        Wiki wiki = findFetchByWikiId(wikiId);
         Waste waste = wasteService.findFetchById(wiki.getWaste().getId());
 
         waste.getTags().clear();
@@ -112,12 +115,16 @@ public class WikiService {
         }
 
         wiki.accept();
-        waste.update(wiki.getName(), wiki.getSolution());
+        waste.getWikis().stream()
+                .filter(w -> w.getWikiState().equals(WikiState.PENDING))
+                .forEach(w -> w.changeOriginal(wiki));
+        waste.update(wiki.getSolution());
     }
 
     @Transactional
     public void reject(Long wikiId){
-        Wiki foundWiki = findById(wikiId);
+        log.info("위키 요청 거절");
+        Wiki foundWiki = findByWikiId(wikiId);
         foundWiki.reject();
     }
 }

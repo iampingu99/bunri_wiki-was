@@ -33,8 +33,7 @@ public class Waste {
 
     private String imageUrl;
 
-    public void update(String name, String solution) {
-        this.name = name;
+    public void update(String solution) {
         this.solution = solution;
     }
 }

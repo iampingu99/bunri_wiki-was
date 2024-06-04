@@ -4,6 +4,7 @@ import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.solution.entity.Waste;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,28 +22,34 @@ public class Wiki extends BaseTimeEntity {
     private Waste waste;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Wiki parent;
+    private Wiki original;
 
-    private String name;
+    @NotNull
     private String solution;
+
+    @NotNull
     private String categories;
+
+    @NotNull
     private String tags;
+
     private WikiState wikiState;
 
     @Builder
-    public Wiki(Account writer, Waste waste, String name, String solution, String categories, String tags, Wiki parent) {
+    public Wiki(Account writer, Waste waste, @NotNull String solution, @NotNull String categories, @NotNull String tags, Wiki original) {
         this.writer = writer;
         this.waste = waste;
-        this.name = name;
         this.solution = solution;
         this.categories = categories;
         this.tags = tags;
         this.wikiState = WikiState.PENDING;
-        this.parent = parent;
+        this.original = original;
     }
 
     public void accept(){
         this.wikiState = WikiState.ACCEPTED;
     }
     public void reject() { this.wikiState = WikiState.REJECTED; }
+
+    public void changeOriginal(Wiki original) { this.original = original; }
 }

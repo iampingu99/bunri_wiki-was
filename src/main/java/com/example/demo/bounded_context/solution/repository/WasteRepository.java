@@ -16,7 +16,8 @@ public interface WasteRepository extends JpaRepository<Waste, Long> {
     Optional<Long> findIdByName(String name);
 
     /**
-     * 태그와 위키는 존재하지 않을 수 있으므로 left join
+     * [x] 컬렉션 조인 문제 해결 (Set 사용은 임시)
+     * [x] select wiki 분리
      */
     @Query("select w from Waste w join fetch w.categories left join fetch w.tags left join fetch w.wikis where w.id = :id")
     Waste findFetchById(Long id);

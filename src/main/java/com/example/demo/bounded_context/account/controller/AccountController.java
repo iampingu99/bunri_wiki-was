@@ -37,7 +37,7 @@ public class AccountController {
     @GetMapping("/me")
     @Operation(summary = "정보 조회", description = "access token 을 사용한 사용자 정보 조회")
     public ResponseEntity<AccountResponse> read(@AuthorizationHeader Long id) {
-        Account account = accountService.findByAccountId(id);
+        Account account = accountService.read(id);
         AccountResponse accountResponse = AccountResponse.fromEntity(account);
         return ResponseEntity.ok().body(accountResponse);
     }

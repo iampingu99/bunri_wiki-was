@@ -1,6 +1,7 @@
 package com.example.demo.bounded_context.solution.dto;
 
 import com.example.demo.bounded_context.solution.entity.Wiki;
+import com.example.demo.bounded_context.solution.entity.WikiState;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +11,9 @@ public record WikiResponse (
         String solution,
         String categories,
         String tags,
-        LocalDateTime createdAt
+        WikiState wikiState,
+        LocalDateTime createdDate,
+        LocalDateTime modifiedDate
 ){
     public static WikiResponse fromEntity(Wiki wiki){
         return new WikiResponse(
@@ -19,7 +22,9 @@ public record WikiResponse (
                 wiki.getSolution(),
                 wiki.getCategories(),
                 wiki.getTags(),
-                wiki.getCreatedDate()
+                wiki.getWikiState(),
+                wiki.getCreatedDate(),
+                wiki.getModifiedDate()
         );
     }
 }

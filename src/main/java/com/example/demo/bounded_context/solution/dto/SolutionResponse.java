@@ -6,6 +6,9 @@ import com.example.demo.bounded_context.solution.entity.Waste;
 
 import java.util.List;
 
+/**
+ * [x] Set 자료구조 미사용으로 변경
+ */
 public record SolutionResponse(
         Long wasteId,
         String name,

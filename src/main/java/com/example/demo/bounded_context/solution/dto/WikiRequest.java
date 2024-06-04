@@ -10,10 +10,11 @@ public record WikiRequest (
         String categories,
         String tags
 ){
-    public Wiki toEntity(Account writer, Waste waste){
+    public Wiki toEntity(Account writer, Waste waste, Wiki parentWiki){
         return Wiki.builder()
                 .writer(writer)
                 .waste(waste)
+                .parent(parentWiki)
                 .name(name)
                 .categories(categories)
                 .tags(tags)

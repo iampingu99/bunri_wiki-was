@@ -1,5 +1,6 @@
 package com.example.demo.bounded_context.solution.entity;
 
+import com.example.demo.bounded_context.wiki.entity.Wiki;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

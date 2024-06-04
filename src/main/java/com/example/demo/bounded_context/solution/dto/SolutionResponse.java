@@ -3,6 +3,7 @@ package com.example.demo.bounded_context.solution.dto;
 import com.example.demo.bounded_context.solution.entity.Category;
 import com.example.demo.bounded_context.solution.entity.Tag;
 import com.example.demo.bounded_context.solution.entity.Waste;
+import com.example.demo.bounded_context.wiki.dto.WikiListResponse;
 
 import java.util.List;
 

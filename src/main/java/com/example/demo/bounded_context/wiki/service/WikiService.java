@@ -1,13 +1,16 @@
-package com.example.demo.bounded_context.solution.service;
+package com.example.demo.bounded_context.wiki.service;
 
 import com.example.demo.base.exception.CustomException;
 import com.example.demo.base.exception.ExceptionCode;
 import com.example.demo.bounded_context.account.entity.Account;
-import com.example.demo.bounded_context.solution.dto.WikiCompareResponse;
-import com.example.demo.bounded_context.solution.dto.WikiRequest;
-import com.example.demo.bounded_context.solution.dto.WikiResponse;
+import com.example.demo.bounded_context.wiki.dto.WikiCompareResponse;
+import com.example.demo.bounded_context.wiki.dto.WikiRequest;
+import com.example.demo.bounded_context.wiki.dto.WikiResponse;
 import com.example.demo.bounded_context.solution.entity.*;
-import com.example.demo.bounded_context.solution.repository.WikiRepository;
+import com.example.demo.bounded_context.wiki.repository.WikiRepository;
+import com.example.demo.bounded_context.solution.service.WasteService;
+import com.example.demo.bounded_context.wiki.entity.Wiki;
+import com.example.demo.bounded_context.wiki.entity.WikiState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

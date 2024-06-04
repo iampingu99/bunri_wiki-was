@@ -1,7 +1,8 @@
-package com.example.demo.bounded_context.solution.entity;
+package com.example.demo.bounded_context.wiki.entity;
 
 import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.entity.Account;
+import com.example.demo.bounded_context.solution.entity.Waste;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

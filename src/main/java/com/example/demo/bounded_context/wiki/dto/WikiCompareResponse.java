@@ -1,4 +1,4 @@
-package com.example.demo.bounded_context.solution.dto;
+package com.example.demo.bounded_context.wiki.dto;
 
 public record WikiCompareResponse(
         WikiResponse origin,

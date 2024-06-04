@@ -1,11 +1,11 @@
-package com.example.demo.bounded_context.solution.controller;
+package com.example.demo.bounded_context.wiki.controller;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
 import com.example.demo.bounded_context.account.service.AccountService;
-import com.example.demo.bounded_context.solution.dto.WikiCompareResponse;
-import com.example.demo.bounded_context.solution.dto.WikiRequest;
-import com.example.demo.bounded_context.solution.entity.Wiki;
-import com.example.demo.bounded_context.solution.service.WikiService;
+import com.example.demo.bounded_context.wiki.dto.WikiCompareResponse;
+import com.example.demo.bounded_context.wiki.dto.WikiRequest;
+import com.example.demo.bounded_context.wiki.entity.Wiki;
+import com.example.demo.bounded_context.wiki.service.WikiService;
 import com.example.demo.bounded_context.solution.service.WasteService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

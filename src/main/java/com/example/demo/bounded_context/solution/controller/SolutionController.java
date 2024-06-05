@@ -1,7 +1,7 @@
 package com.example.demo.bounded_context.solution.controller;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
-import com.example.demo.bounded_context.solution.dto.ContributedCreationRequest;
+import com.example.demo.bounded_context.solution.dto.ContributeCreationRequest;
 import com.example.demo.bounded_context.solution.dto.KeywordRequest;
 import com.example.demo.bounded_context.solution.dto.SolutionResponse;
 import com.example.demo.bounded_context.solution.dto.WasteListResponse;
@@ -37,7 +37,7 @@ public class SolutionController {
 
     @PostMapping("")
     private ResponseEntity<?> create(@AuthorizationHeader Long accountId,
-                                     @RequestBody ContributedCreationRequest request){
+                                     @RequestBody ContributeCreationRequest request){
         Long id = solutionUseCase.create(accountId, request);
         return ResponseEntity.ok("생성 요청이 완료되었습니다. id = " + id);
     }

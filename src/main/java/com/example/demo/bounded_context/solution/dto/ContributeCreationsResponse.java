@@ -5,13 +5,13 @@ import com.example.demo.bounded_context.solution.entity.Waste;
 
 import java.time.LocalDateTime;
 
-public record ContributedCreationsResponse(
+public record ContributeCreationsResponse(
         String name,
         ContributedCreationState contributedCreationState,
         LocalDateTime createdDate
 ) {
-    public static ContributedCreationsResponse fromEntity(Waste waste){
-        return new ContributedCreationsResponse(
+    public static ContributeCreationsResponse fromEntity(Waste waste){
+        return new ContributeCreationsResponse(
                 waste.getName(),
                 waste.getState(),
                 waste.getCreatedDate()

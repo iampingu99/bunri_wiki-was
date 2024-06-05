@@ -2,10 +2,13 @@ package com.example.demo.bounded_context.solution.service;
 
 import com.example.demo.base.exception.CustomException;
 import com.example.demo.base.exception.ExceptionCode;
+import com.example.demo.bounded_context.account.entity.Account;
+import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.entity.Waste;
 import com.example.demo.bounded_context.solution.repository.WasteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +52,16 @@ public class WasteService {
     public Waste findFetchById(Long id){
         log.info("select from Waste Join Category join Tag join Wiki");
         return wasteRepository.findFetchById(id);
+    }
+
+    @Transactional
+    public Waste create(Account account, Waste waste){
+        waste.setWriter(account);
+        return wasteRepository.save(waste);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Waste> findByAccountIdAndState(Long accountId, ContributedCreationState state, Pageable pageable){
+        return wasteRepository.findByAccountIdAndState(accountId, state, pageable);
     }
 }

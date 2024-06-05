@@ -1,14 +1,13 @@
 package com.example.demo.bounded_context.solution.controller;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
-import com.example.demo.bounded_context.solution.dto.ContributeCreationRequest;
-import com.example.demo.bounded_context.solution.dto.KeywordRequest;
-import com.example.demo.bounded_context.solution.dto.SolutionResponse;
-import com.example.demo.bounded_context.solution.dto.WasteListResponse;
+import com.example.demo.bounded_context.solution.dto.*;
 import com.example.demo.bounded_context.solution.service.SolutionService;
 import com.example.demo.bounded_context.solution.service.SolutionUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +39,17 @@ public class SolutionController {
                                      @RequestBody ContributeCreationRequest request){
         Long id = solutionUseCase.create(accountId, request);
         return ResponseEntity.ok("생성 요청이 완료되었습니다. id = " + id);
+    }
+
+    @GetMapping("")
+    private ResponseEntity<?> readContributeCreations(@PageableDefault(page = 0, size = 10) Pageable pageable){
+        List<ContributeCreationListResponse> creations = solutionUseCase.readContributeCreations(pageable);
+        return ResponseEntity.ok(creations);
+    }
+
+    @GetMapping("/{wasteId}")
+    private ResponseEntity<?> readContributeCreation(@PathVariable Long wasteId){
+        ContributeCreationResponse creation = solutionUseCase.readContributeCreation(wasteId);
+        return ResponseEntity.ok(creation);
     }
 }

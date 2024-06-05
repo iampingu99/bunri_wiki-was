@@ -7,7 +7,7 @@ import com.example.demo.bounded_context.account.dto.AccountResponse;
 import com.example.demo.bounded_context.account.dto.AccountUpdateRequest;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.account.service.AccountService;
-import com.example.demo.bounded_context.solution.dto.ContributeCreationsResponse;
+import com.example.demo.bounded_context.solution.dto.ContributeCreationListResponse;
 import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.service.SolutionUseCase;
 import com.example.demo.bounded_context.wiki.dto.ContributeModificationsResponse;
@@ -67,7 +67,7 @@ public class AccountController {
                                                        @RequestParam(name = "state", defaultValue = "pending") String state,
                                                        @PageableDefault(page = 0, size = 10) Pageable pageable){
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-        List<ContributeCreationsResponse> creations =
+        List<ContributeCreationListResponse> creations =
                 solutionUseCase.readContributeCreations(accountId, ContributedCreationState.valueOf(state.toUpperCase()), pageable);
         return ResponseEntity.ok(creations);
     }

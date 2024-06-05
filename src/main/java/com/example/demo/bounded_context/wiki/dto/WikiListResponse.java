@@ -1,13 +1,14 @@
-package com.example.demo.bounded_context.solution.dto;
+package com.example.demo.bounded_context.wiki.dto;
 
-import com.example.demo.bounded_context.solution.entity.Wiki;
-import com.example.demo.bounded_context.solution.entity.WikiState;
+import com.example.demo.bounded_context.wiki.entity.Wiki;
+import com.example.demo.bounded_context.wiki.entity.WikiState;
 
 import java.time.LocalDateTime;
 
 public record WikiListResponse(
         Long wikiId,
         String authorNickName,
+        String wasteName,
         WikiState wikiState,
         LocalDateTime createdDate,
         LocalDateTime modifiedDate
@@ -16,6 +17,7 @@ public record WikiListResponse(
         return new WikiListResponse(
                 wiki.getId(),
                 wiki.getWriter().getNickname(),
+                wiki.getWaste().getName(),
                 wiki.getWikiState(),
                 wiki.getCreatedDate(),
                 wiki.getModifiedDate()

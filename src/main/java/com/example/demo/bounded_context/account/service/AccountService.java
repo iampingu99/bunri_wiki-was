@@ -32,6 +32,12 @@ public class AccountService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.ACCOUNT_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public Account findFetchByAccountId(Long accountId){
+        return accountRepository.findFetchByAccountId(accountId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.ACCOUNT_NOT_FOUND));
+    }
+
     /**
      * 로그아웃
      * 1. access token 정보로 blacklist token 생성
@@ -54,6 +60,11 @@ public class AccountService {
         RefreshToken refresh = validateRefreshTokenOwnership(accessToken, refreshToken);
         refreshTokenService.remove(refresh.getAccountId());
         accountRepository.deleteById(refresh.getAccountId());
+    }
+
+    @Transactional(readOnly = true)
+    public Account read(Long accountId){
+        return findFetchByAccountId(accountId);
     }
 
     @Transactional

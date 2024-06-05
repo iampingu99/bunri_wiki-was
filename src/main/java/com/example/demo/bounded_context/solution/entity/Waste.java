@@ -1,5 +1,6 @@
 package com.example.demo.bounded_context.solution.entity;
 
+import com.example.demo.bounded_context.wiki.entity.Wiki;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,8 +33,7 @@ public class Waste {
 
     private String imageUrl;
 
-    public void update(String name, String solution) {
-        this.name = name;
+    public void update(String solution) {
         this.solution = solution;
     }
 }

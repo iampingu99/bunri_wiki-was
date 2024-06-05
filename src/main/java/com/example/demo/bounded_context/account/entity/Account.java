@@ -3,8 +3,12 @@ package com.example.demo.bounded_context.account.entity;
 
 import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.dto.AccountUpdateRequest;
+import com.example.demo.bounded_context.wiki.entity.Wiki;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +29,9 @@ public class Account extends BaseTimeEntity {
     private Double latitude;
 
     private Double longitude;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Wiki> wikis = new ArrayList<>();
 
     @Builder
     public Account(String accountName, String password, String email, String nickname, Double latitude, Double longitude) {

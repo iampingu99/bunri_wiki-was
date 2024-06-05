@@ -7,16 +7,25 @@ import com.example.demo.bounded_context.account.dto.AccountResponse;
 import com.example.demo.bounded_context.account.dto.AccountUpdateRequest;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.account.service.AccountService;
+import com.example.demo.bounded_context.solution.dto.ContributedCreationsResponse;
+import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
+import com.example.demo.bounded_context.solution.service.SolutionUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/account")
 public class AccountController {
     private final AccountService accountService;
+    private final SolutionUseCase solutionUseCase;
 
     @PostMapping("/sign-out")
     @Operation(summary = "로그아웃", description = "access / refresh token 을 사용한 로그아웃")
@@ -47,5 +56,15 @@ public class AccountController {
     public ResponseEntity<?> update(@AuthorizationHeader Long id, @RequestBody AccountUpdateRequest request) {
         accountService.update(id, request);
         return ResponseEntity.ok().body("수정에 성공했습니다.");
+    }
+
+    @GetMapping("/{accountId}/contributions/create")
+    private ResponseEntity<?> readCreatedContributions(@PathVariable Long accountId,
+                                                       @RequestParam(name = "state", defaultValue = "pending") String state,
+                                                       @PageableDefault(page = 1, size = 10) Pageable pageable){
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        List<ContributedCreationsResponse> contributedCreationsResponse =
+                solutionUseCase.readCreatedContributions(accountId, ContributedCreationState.valueOf(state.toUpperCase()), pageable);
+        return ResponseEntity.ok(contributedCreationsResponse);
     }
 }

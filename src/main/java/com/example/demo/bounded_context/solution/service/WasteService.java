@@ -8,6 +8,7 @@ import com.example.demo.bounded_context.solution.entity.Waste;
 import com.example.demo.bounded_context.solution.repository.WasteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +62,11 @@ public class WasteService {
     }
 
     @Transactional(readOnly = true)
-    public List<Waste> findByAccountIdAndState(Long accountId, ContributedCreationState state, Pageable pageable){
+    public Page<Waste> findByAccountIdAndStateWithPaging(Long accountId, ContributedCreationState state, Pageable pageable){
         return wasteRepository.findByAccountIdAndState(accountId, state, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<Waste> findAllFetchWithPaging(Pageable pageable){
+        return wasteRepository.findAllFetchByPage(pageable);
     }
 }

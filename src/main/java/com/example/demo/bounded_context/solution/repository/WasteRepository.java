@@ -2,6 +2,7 @@ package com.example.demo.bounded_context.solution.repository;
 
 import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.entity.Waste;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,10 +20,16 @@ public interface WasteRepository extends JpaRepository<Waste, Long> {
     Optional<Long> findIdByName(String name);
 
     /**
-     * 사용자의 생성 기여 게시물 조회
+     * 사용자의 생성 기여 게시물 목록 조회
      */
     @Query("select w from Waste w where w.writer.id = :accountId and w.state = :state")
-    List<Waste> findByAccountIdAndState(Long accountId, ContributedCreationState state, Pageable pageable);
+    Page<Waste> findByAccountIdAndState(Long accountId, ContributedCreationState state, Pageable pageable);
+
+    /**
+     * 생성 기여 게시물 목록 조회
+     */
+    @Query("select w from Waste w join fetch w.writer order by w.createdDate DESC")
+    Page<Waste> findAllFetchByPage(Pageable pageable);
 
     /**
      * [x] 컬렉션 조인 문제 해결 (Set 사용은 임시)

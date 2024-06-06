@@ -13,9 +13,11 @@ import com.example.demo.bounded_context.wiki.entity.Wiki;
 import com.example.demo.bounded_context.wiki.entity.WikiState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +39,11 @@ public class WikiService {
         log.trace("select fetch wiki by id");
         return wikiRepository.findFetchById(wikiId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.EMPTY_WIKI));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Wiki> findByAccountIdAndState(Long accountId, WikiState state, Pageable pageable){
+        return wikiRepository.findByAccountIdAndState(accountId, state, pageable);
     }
 
     @Transactional(readOnly = true)

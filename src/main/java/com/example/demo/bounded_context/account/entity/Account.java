@@ -3,6 +3,7 @@ package com.example.demo.bounded_context.account.entity;
 
 import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.dto.AccountUpdateRequest;
+import com.example.demo.bounded_context.solution.entity.Waste;
 import com.example.demo.bounded_context.wiki.entity.Wiki;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,9 @@ public class Account extends BaseTimeEntity {
     private Double latitude;
 
     private Double longitude;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Waste> waste = new ArrayList<>();
 
     @OneToMany(mappedBy = "writer")
     private List<Wiki> wikis = new ArrayList<>();

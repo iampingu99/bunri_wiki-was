@@ -27,41 +27,45 @@ public class WasteService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.WASTE_NOT_FOUND));
     }
 
-    /**
-     * 폐기물 이름 검색
-     */
     @Transactional(readOnly = true)
     public Optional<Long> findByName(String name){
-        log.info("SELECT FROM WASTE");
+        log.info("솔루션 이름 조회");
         return wasteRepository.findIdByName(name);
     }
 
-    /**
-     * 카테고리에 따른 폐기물 목록 출력
-     */
     @Transactional(readOnly = true)
     public Page<Waste> findFetchByCategory(String name, Pageable pageable){
-        log.info("select from Waste join category");
+        log.info("카테고리별 솔루션 조회(Waste, Category, Tag)");
         return wasteRepository.findByCategoriesName(name, pageable);
     }
 
-    /**
-     * 배출방법 모든 정보 출력
-     */
     @Transactional(readOnly = true)
     public Waste findFetchById(Long id){
-        log.info("select from Waste Join Category join Tag join Wiki");
+        log.info("솔루션 조회(Waste, Category, Tag)");
         return wasteRepository.findFetchById(id);
     }
 
     @Transactional
     public Waste create(Account account, Waste waste){
+        log.info("솔루션 생성");
         waste.setWriter(account);
         return wasteRepository.save(waste);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Waste> findByAccountIdAndStateWithPaging(Long accountId, ContributedCreationState state, Pageable pageable){
+        log.info("페이징을 사용한 사용자별 솔루션 목록 조회");
+        return wasteRepository.findByAccountIdAndState(accountId, state, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<Waste> findAllFetchWithPaging(Pageable pageable){
+        log.info("페이징을 사용한 모든 솔루션 목록 조회");
+        return wasteRepository.findAllFetchByPage(pageable);
+    }
+
     @Transactional
     public Waste accept(Long wasteId){
+        log.info("솔루션 승인");
         Waste foundWaste = findById(wasteId);
         foundWaste.accept();
         return foundWaste;
@@ -69,17 +73,9 @@ public class WasteService {
 
     @Transactional
     public Waste reject(Long wasteId){
+        log.info("솔루션 거부");
         Waste foundWaste = findById(wasteId);
         foundWaste.reject();
         return foundWaste;
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Waste> findByAccountIdAndStateWithPaging(Long accountId, ContributedCreationState state, Pageable pageable){
-        return wasteRepository.findByAccountIdAndState(accountId, state, pageable);
-    }
-    @Transactional(readOnly = true)
-    public Page<Waste> findAllFetchWithPaging(Pageable pageable){
-        return wasteRepository.findAllFetchByPage(pageable);
     }
 }

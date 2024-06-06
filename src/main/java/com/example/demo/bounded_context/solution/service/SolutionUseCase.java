@@ -32,7 +32,8 @@ public class SolutionUseCase {
      * - 솔루션 이름 / 태그 이름 순으로 검색하여 솔루션을 검색할 수 있다.
      * - 승인 되지 않은 솔루션은 검색되지 않는다.
      */
-    public SolutionResponse search(String wasteName){
+    public SolutionResponse searchByKeyword(String wasteName){
+        log.info("솔루션 키워드 검색");
         Long wasteId = wasteService.findByName(wasteName)
                 .or(() -> tagService.findIdByName(wasteName))
                 .orElseThrow(() -> new CustomException(ExceptionCode.WASTE_NOT_FOUND));
@@ -46,8 +47,8 @@ public class SolutionUseCase {
      * - 모든 사용자는 카테고리별로 구분된 솔루션 목록을 검색할 수 있다.
      * - 승인 되지 않은 솔루션은 검색되지 않는다.
      */
-    public Page<SolutionListResponse> category(String categoryName, Pageable pageable){
-        log.info("카테고리 검색");
+    public Page<SolutionListResponse> searchByCategory(String categoryName, Pageable pageable){
+        log.info("카테고리별 솔루션 목록 조회");
         Page<Waste> solutionList = wasteService.findFetchByCategory(categoryName, pageable);
         return solutionList.map(SolutionListResponse::fromEntity);
     }
@@ -58,6 +59,7 @@ public class SolutionUseCase {
      * - 이름, 카테고리, 태그, 새 솔루션을 생성할 수 있다.
      */
     public Long create(Long accountId, SolutionRequest request){
+        log.info("새 솔루션 생성");
         Account account = accountService.findByAccountId(accountId);
         Waste waste = wasteService.create(account, request.toEntity());
         return waste.getId();
@@ -70,6 +72,7 @@ public class SolutionUseCase {
     public List<ContributeCreationListResponse> readContributeCreations(Long accountId,
                                                                         ContributedCreationState state,
                                                                         Pageable pageable){
+        log.info("사용자의 생성 기여 게시물 목록 조회");
         Page<Waste> accountCreations = wasteService.findByAccountIdAndStateWithPaging(accountId, state, pageable);
         return accountCreations.stream().map(ContributeCreationListResponse::fromEntity).toList();
     }
@@ -79,6 +82,7 @@ public class SolutionUseCase {
      * - [사용자, 관리자]는 모든 솔루션을 목록을 조회할 수 있다.
      */
     public Page<ContributeCreationListResponse> readContributeCreations(Pageable pageable){
+        log.info("솔루션 목록 조회");
         Page<Waste> allCreations = wasteService.findAllFetchWithPaging(pageable);
         return allCreations.map(ContributeCreationListResponse::fromEntity);
     }
@@ -88,6 +92,7 @@ public class SolutionUseCase {
      * - [사용자, 관리자]는 솔루션 목록에서 솔루션을 상세 조회할 수 있다.
      */
     public SolutionResponse readContributeCreation(Long wastId){
+        log.info("솔루션 상세 조회");
         Waste creation = wasteService.findFetchById(wastId);
         return SolutionResponse.fromEntity(creation);
     }
@@ -97,6 +102,7 @@ public class SolutionUseCase {
      * - 관리자는 새 솔루션 요청을 승인하여 검색 데이터로 사용할 수 있다.
      */
     public Long accept(Long wasteId){
+        log.info("새 솔루션 요청 승인");
         Waste acceptCreation = wasteService.accept(wasteId);
         return acceptCreation.getId();
     }
@@ -106,6 +112,7 @@ public class SolutionUseCase {
      * - 관리자는 새 솔루션 요청을 거부할 수 있다.
      */
     public Long reject(Long wasteId){
+        log.info("새 솔루션 요청 거부");
         Waste rejectCreation = wasteService.reject(wasteId);
         return rejectCreation.getId();
     }

@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -47,9 +46,10 @@ public class QuestionBoardController {
 
     // @PageableDefault(page = 1) : page는 기본으로 1페이지를 보여준다.
     @GetMapping("/read/paging")
-    @Operation(summary = "Q&A 게시글 페이징", description = "http://localhost:8080/api/questionBoard/read/paging?page=번호(1~")
-    public ResponseEntity<?> readPage(@PageableDefault(page = 1) Pageable pageable) {
-        Page<PageQuestionBoardDto> boardPages = questionBoardService.paging(pageable);
+    @Operation(summary = "Q&A 게시글 페이징", description = "/read/paging?page=번호(1~ ,(1-id(최신순),2-추천순,3-조회순")
+    public ResponseEntity<?> readPage(@PageableDefault(page = 1) Pageable pageable,
+                                      @RequestBody Integer option) {
+        Page<PageQuestionBoardDto> boardPages = questionBoardService.paging(pageable,option);
 
         return ResponseEntity.ok(boardPages);
     }

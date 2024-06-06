@@ -1,31 +1,32 @@
 package com.example.demo.bounded_context.solution.dto;
 
 import com.example.demo.bounded_context.solution.entity.Category;
+import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.entity.Tag;
 import com.example.demo.bounded_context.solution.entity.Waste;
-import com.example.demo.bounded_context.wiki.dto.WikiListResponse;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-/**
- * [x] Set 자료구조 미사용으로 변경
- */
+@Schema(name = "SolutionResponse", description = "솔루션 조회 DTO")
 public record SolutionResponse(
-        Long wasteId,
-        String name,
-        List<String> materials,
+        String nickName,
+        String solutionName,
+        String imageUrl,
+        List<String> categories,
         List<String> tags,
         String solution,
-        List<WikiListResponse> opinions
-){
-    public static SolutionResponse fromEntity(Waste waste){
+        ContributedCreationState state
+) {
+    public static SolutionResponse fromEntity(Waste waste) {
         return new SolutionResponse(
-                waste.getId(),
+                waste.getWriter().getNickname(),
                 waste.getName(),
+                waste.getImageUrl(),
                 waste.getCategories().stream().map(Category::getName).toList(),
                 waste.getTags().stream().map(Tag::getName).toList(),
                 waste.getSolution(),
-                waste.getWikis().stream().map(WikiListResponse::fromEntity).toList()
-                );
+                waste.getState()
+        );
     }
 }

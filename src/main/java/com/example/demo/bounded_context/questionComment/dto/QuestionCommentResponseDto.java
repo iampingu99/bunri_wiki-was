@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,8 @@ public class QuestionCommentResponseDto {
     private Integer recommend;
     private Long boardId;
     private String nickname;
+    private String accountName;
+    private LocalDateTime createdDate;
 
     public QuestionCommentResponseDto(QuestionComment questionComment){
         this.id = questionComment.getId();
@@ -21,6 +25,8 @@ public class QuestionCommentResponseDto {
         this.recommend = questionComment.getRecommend();
         this.boardId = questionComment.getQuestionBoard().getId();
         this.nickname = questionComment.getWriter().getNickname();
+        this.accountName = questionComment.getWriter().getAccountName();
+        this.createdDate = questionComment.getCreatedDate();
     }
 
 }

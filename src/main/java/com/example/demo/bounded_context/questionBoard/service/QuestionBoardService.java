@@ -86,14 +86,24 @@ public class QuestionBoardService {
         questionBoard.adopting(comment);
     }
 
-    public Page<PageQuestionBoardDto> paging(Pageable pageable) {
+    public Page<PageQuestionBoardDto> paging(Pageable pageable, Integer option) {
         int page = pageable.getPageNumber() - 1; // page 위치에 있는 값은 0부터 시작한다.
         int pageLimit = 10; // 한페이지에 보여줄 글 개수
-
-        Page<QuestionBoard> questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<QuestionBoard> questionBoardPages;
+        if(option==1) {
+            questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdDate")));
+        }
+        else if(option==2){
+            questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "recommend","createdDate")));
+        }
+        else{
+            questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "view","createdDate")));
+        }
 
         return questionBoardPages.map(
                 PageQuestionBoardDto::new);
     }
+
+
 
 }

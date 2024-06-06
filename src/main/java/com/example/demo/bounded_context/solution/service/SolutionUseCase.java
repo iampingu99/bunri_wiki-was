@@ -4,6 +4,8 @@ import com.example.demo.base.exception.CustomException;
 import com.example.demo.base.exception.ExceptionCode;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.account.service.AccountService;
+import com.example.demo.bounded_context.solution.dto.DetectRequest;
+import com.example.demo.bounded_context.solution.dto.DetectResponse;
 import com.example.demo.bounded_context.solution.dto.SolutionResponse;
 import com.example.demo.bounded_context.solution.dto.ContributeCreationListResponse;
 import com.example.demo.bounded_context.solution.dto.SolutionRequest;
@@ -25,6 +27,19 @@ public class SolutionUseCase {
     private final AccountService accountService;
     private final WasteService wasteService;
     private final TagService tagService;
+    private final DetectService detectService;
+
+    /**
+     * 솔루션 이미지 검색
+     * - 모든 사용자는 이미지를 사용하여 솔루션 검색을 할 수 있다.
+     * - 카테고리의 확률과 물체 좌표를 출력한다.
+     */
+    public DetectResponse searchByImage(String imageUrl){
+        log.info("솔루션 이미지 검색");
+        DetectRequest request = DetectRequest.fromEntity(imageUrl);
+        DetectResponse detectResponse = detectService.imageDetection(request);
+        return detectResponse;
+    }
 
     /**
      * 솔루션 키워드 검색

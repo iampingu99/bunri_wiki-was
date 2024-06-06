@@ -58,4 +58,22 @@ public class SolutionUseCase {
         Waste creation = wasteService.findFetchById(wastId);
         return ContributeCreationResponse.fromEntity(creation);
     }
+
+    /**
+     * 생성 기여 게시물 승인
+     * - 관리자는 생성 기여 게시물 요청을 승인하여 기존 게시물을 대체할 수 있다.
+     */
+    public Long accept(Long wasteId){
+        Waste acceptCreation = wasteService.accept(wasteId);
+        return acceptCreation.getId();
+    }
+
+    /**
+     * 생성 기여 게시물 거부
+     * - 관리자는 생성 기여 게시물 요청을 거부할 수 있다.
+     */
+    public Long reject(Long wasteId){
+        Waste rejectCreation = wasteService.reject(wasteId);
+        return rejectCreation.getId();
+    }
 }

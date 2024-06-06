@@ -61,6 +61,20 @@ public class WasteService {
         return wasteRepository.save(waste);
     }
 
+    @Transactional
+    public Waste accept(Long wasteId){
+        Waste foundWaste = findById(wasteId);
+        foundWaste.accept();
+        return foundWaste;
+    }
+
+    @Transactional
+    public Waste reject(Long wasteId){
+        Waste foundWaste = findById(wasteId);
+        foundWaste.reject();
+        return foundWaste;
+    }
+
     @Transactional(readOnly = true)
     public Page<Waste> findByAccountIdAndStateWithPaging(Long accountId, ContributedCreationState state, Pageable pageable){
         return wasteRepository.findByAccountIdAndState(accountId, state, pageable);

@@ -81,4 +81,12 @@ public class Waste extends BaseTimeEntity {
     public void update(String solution) {
         this.solution = solution;
     }
+
+    public void accept(){
+        this.state = ContributedCreationState.ACCEPTED;
+    }
+
+    public void reject(){
+        this.state = ContributedCreationState.REJECTED;
+    }
 }

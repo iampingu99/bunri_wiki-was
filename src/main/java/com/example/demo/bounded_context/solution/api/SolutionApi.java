@@ -1,6 +1,7 @@
 package com.example.demo.bounded_context.solution.api;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
+import com.example.demo.bounded_context.solution.dto.ImageRequest;
 import com.example.demo.bounded_context.solution.dto.SolutionRequest;
 import com.example.demo.bounded_context.solution.dto.KeywordRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Solution", description = "솔루션 관련 API")
 @RequestMapping("/api/solution")
 public interface SolutionApi {
+
+    @GetMapping("/image")
+    @Operation(summary = "솔루션 이미지 검색", description = "모든 사용자는 사진을 이용한 인공지능 물질 분류에 따른 솔루션을 조회할 수 있다.")
+    ResponseEntity<?> searchByImage(@RequestBody ImageRequest request);
 
     @GetMapping("/keyword")
     @Operation(summary = "솔루션 키워드 검색", description = "모든 사용자는 키워드를 사용하여 솔루션 검색을 할 수 있다.<br> 승인 되지 않은 솔루션은 검색되지 않는다.")
@@ -43,7 +48,7 @@ public interface SolutionApi {
     ResponseEntity<?> searchByCategory(@RequestBody KeywordRequest request,
                                                                      @PageableDefault(page = 0, size = 10) Pageable pageable);
     @PostMapping("")
-    @Operation(summary = "새 솔루션 생성", description = "로그인한 사용자는 검색이 실패한 경우 새 솔루션을 생성할 수 있다.<br> 이름, 카테고리, 태그, 새 솔루션을 생성할 수 있다.")
+    @Operation(summary = "새 솔루션 생성", description = "로그인한 사용자는 검색이 실패한 경우 새 솔루션을 생성할 수 있다.<br> 태그를 제외한 이름, 이미지, 카테고리, 솔루션 값은 필수로 입력하여 새 솔루션을 생성할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "새 솔루션 생성 성공"),
             @ApiResponse(responseCode = "409", description = "새 솔루션 생성 실패",

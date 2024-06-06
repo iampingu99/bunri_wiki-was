@@ -1,6 +1,8 @@
 package com.example.demo.bounded_context.solution.controller;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
+import com.example.demo.bounded_context.solution.dto.DetectResponse;
+import com.example.demo.bounded_context.solution.dto.ImageRequest;
 import com.example.demo.bounded_context.solution.api.SolutionApi;
 import com.example.demo.bounded_context.solution.dto.*;
 import com.example.demo.bounded_context.solution.service.SolutionUseCase;
@@ -17,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class SolutionController implements SolutionApi {
     private final SolutionUseCase solutionUseCase;
 
+    public ResponseEntity<DetectResponse> searchByImage(@RequestBody ImageRequest request) {
+        DetectResponse detectResponse = solutionUseCase.searchByImage(request.getUrl());
+        return ResponseEntity.ok().body(detectResponse);
+    }
+
     public ResponseEntity<SolutionResponse> searchByKeyword(@RequestBody KeywordRequest request){
         SolutionResponse solution = solutionUseCase.searchByKeyword(request.keyword());
         return ResponseEntity.ok().body(solution);
@@ -29,7 +36,7 @@ public class SolutionController implements SolutionApi {
     }
 
     public ResponseEntity<Long> create(@AuthorizationHeader Long accountId,
-                                    @RequestBody SolutionRequest request){
+                                       @RequestBody SolutionRequest request){
         Long id = solutionUseCase.create(accountId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }

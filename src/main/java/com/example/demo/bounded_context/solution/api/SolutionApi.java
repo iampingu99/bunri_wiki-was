@@ -1,9 +1,8 @@
 package com.example.demo.bounded_context.solution.api;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
-import com.example.demo.bounded_context.solution.dto.ContributeCreationListResponse;
-import com.example.demo.bounded_context.solution.dto.ContributeCreationRequest;
-import com.example.demo.bounded_context.solution.dto.ContributeCreationResponse;
+import com.example.demo.bounded_context.solution.dto.SolutionRequest;
+import com.example.demo.bounded_context.solution.dto.KeywordRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -16,9 +15,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Solution", description = "솔루션 관련 API")
+@RequestMapping("/api/solution")
 public interface SolutionApi {
-    @PostMapping("/api/solution")
-    @Operation(summary = "새 솔루션 생성", description = "로그인한 사용자는 기존 솔루션에 없는 솔루션을 생성할 수 있다.<br> 이름, 카테고리, 태그, 새 솔루션을 생성할 수 있다.")
+
+    @GetMapping("/keyword")
+    @Operation(summary = "솔루션 키워드 검색", description = "모든 사용자는 키워드를 사용하여 솔루션 검색을 할 수 있다.<br> 승인 되지 않은 솔루션은 검색되지 않는다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "솔루션 키워드 검색 성공"),
+            @ApiResponse(responseCode = "404", description = "솔루션 키워드 검색 실패",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(value = """
+                                    										{
+                                    										"timestamp": "2024-06-04T21:07:08.923528",
+                                                                            "cause": "EMPTY_SOLUTION",
+                                                                            "message": "해당 솔루션을 찾을 수 없습니다."
+                                    										}
+                                    """)
+                    }))
+    })
+    ResponseEntity<?> searchByKeyword(@RequestBody KeywordRequest request);
+
+    @GetMapping("/category")
+    @Operation(summary = "카테고리별 솔루션 목록 조회", description = "모든 사용자는 카테고리별로 구분된 솔루션 목록을 검색할 수 있다.<br> 승인 되지 않은 솔루션은 검색되지 않는다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "카테고리별 솔루션 목록 검색 성공"),
+    })
+    ResponseEntity<?> searchByCategory(@RequestBody KeywordRequest request,
+                                                                     @PageableDefault(page = 0, size = 10) Pageable pageable);
+    @PostMapping("")
+    @Operation(summary = "새 솔루션 생성", description = "로그인한 사용자는 검색이 실패한 경우 새 솔루션을 생성할 수 있다.<br> 이름, 카테고리, 태그, 새 솔루션을 생성할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "새 솔루션 생성 성공"),
             @ApiResponse(responseCode = "409", description = "새 솔루션 생성 실패",
@@ -33,44 +58,44 @@ public interface SolutionApi {
                     }))
     })
     ResponseEntity<?> create(@AuthorizationHeader Long accountId,
-                             @RequestBody ContributeCreationRequest request);
+                             @RequestBody SolutionRequest request);
 
-    @GetMapping("/api/solution")
-    @Operation(summary = "새 솔루션 목록 페이지 조회", description = "사용자는 모든 새 솔루션을 조회할 수 있다.")
+    @GetMapping("")
+    @Operation(summary = "솔루션 목록 조회", description = "사용자는 모든 솔루션을 목록을 조회할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "모든 새 솔루션 목록 페이지 조회 성공")
     })
     ResponseEntity<?> readContributeCreationList(@PageableDefault(page = 0, size = 10) Pageable pageable);
 
-    @GetMapping("/api/solution/{wasteId}")
-    @Operation(summary = "솔루션 상세 조회", description = "사용자는 솔루션을 상세 조회할 수 있다.")
+    @GetMapping("/{wasteId}")
+    @Operation(summary = "솔루션 상세 조회", description = "사용자는 솔루션 목록에서 솔루션을 상세 조회할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "솔루션 상세 조회 성공")
     })
     ResponseEntity<?> readContributeCreation(@PathVariable Long wasteId);
 
-    @PutMapping("/api/solution/{wasteId}/accepted")
-    @Operation(summary = "새 솔루션 승인", description = "관리자는 새 솔루션을 승인하여 검색 데이터로 사용할 수 있다.")
+    @PutMapping("/{wasteId}/accepted")
+    @Operation(summary = "새 솔루션 요청 승인", description = "관리자는 새 솔루션 요청을 승인하여 검색 데이터로 사용할 수 있다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "새 솔루션 승인 성공"),
-            @ApiResponse(responseCode = "404", description = "새 솔루션 승인 실패",
+            @ApiResponse(responseCode = "204", description = "새 솔루션 요청 승인 성공"),
+            @ApiResponse(responseCode = "404", description = "새 솔루션 요청 승인 실패",
                     content = @Content(mediaType = "application/json", examples = {
                             @ExampleObject(value = """
                                     										{
                                     										"timestamp": "2024-06-04T21:07:08.923528",
                                                                             "cause": "SOLUTION_NOT_FOUND",
-                                                                            "message": "해당 솔루션이 존재하지 않습니다."
+                                                                            "message": "해당 솔루션을 찾을 수 없습니다."
                                     										}
                                     """)
                     }))
     })
     ResponseEntity<?> accept(@PathVariable Long wasteId);
 
-    @PutMapping("/api/solution/{wasteId}/rejected")
-    @Operation(summary = "새 솔루션 거부", description = "관리자는 새 솔루션을 거부할 수 있다.")
+    @PutMapping("/{wasteId}/rejected")
+    @Operation(summary = "새 솔루션 요청 거부", description = "관리자는 새 솔루션 요청을 거부할 수 있다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "새 솔루션 거부 성공"),
-            @ApiResponse(responseCode = "404", description = "새 솔루션 거부 실패",
+            @ApiResponse(responseCode = "204", description = "새 솔루션 요청 거부 성공"),
+            @ApiResponse(responseCode = "404", description = "새 솔루션 요청 거부 실패",
                     content = @Content(mediaType = "application/json", examples = {
                             @ExampleObject(value = """
                                     										{

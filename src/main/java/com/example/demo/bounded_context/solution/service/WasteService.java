@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,9 +40,9 @@ public class WasteService {
      * 카테고리에 따른 폐기물 목록 출력
      */
     @Transactional(readOnly = true)
-    public List<Waste> findFetchByCategory(String name){
+    public Page<Waste> findFetchByCategory(String name, Pageable pageable){
         log.info("select from Waste join category");
-        return wasteRepository.findByCategoriesName(name);
+        return wasteRepository.findByCategoriesName(name, pageable);
     }
 
     /**

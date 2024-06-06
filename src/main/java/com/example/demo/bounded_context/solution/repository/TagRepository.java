@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    @Query("select t.waste.id from Tag t where t.name = :name")
+
+    /**
+     * 반영 된 솔루션 태그 이름으로 조회
+     * full text search 도입 고민
+     */
+    @Query("select w.id from Tag t join fetch t.waste w where t.name = :name and w.state = 1")
     Optional<Long> findIdByName(String name);
 }

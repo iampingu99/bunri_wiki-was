@@ -9,8 +9,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,17 +24,19 @@ public class Waste extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Account writer;
 
     @NotNull @Column(unique = true)
     private String name;
 
+    @BatchSize(size = 10)
     @OneToMany(mappedBy = "waste", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Category> categories = new HashSet<>();
+    private List<Category> categories = new ArrayList<>();
 
+    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "waste", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Tag> tags = new HashSet<>();
+    private List<Tag> tags = new ArrayList<>();
 
     @NotNull
     private String solution;

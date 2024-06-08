@@ -1,4 +1,4 @@
-package com.example.demo.bounded_context.separation.dto;
+package com.example.demo.bounded_context.solution.dto;
 
 import lombok.Getter;
 

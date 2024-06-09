@@ -22,7 +22,7 @@ public class ReadRecycleBoardDto {
 
     private Integer view;
 
-    private Account writer;
+    private String writer;
 
     private String location;
 
@@ -39,7 +39,7 @@ public class ReadRecycleBoardDto {
         this.content=recycleBoard.getContent();
         this.location=recycleBoard.getLocation();
         this.shareTarget=recycleBoard.getShareTarget();
-        this.writer=recycleBoard.getWriter();
+        this.writer=recycleBoard.getWriter().getNickname();
         this.collection=recycleBoard.isCollection();
         this.view=recycleBoard.getView();
         this.createdDate=recycleBoard.getCreatedDate();

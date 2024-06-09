@@ -62,8 +62,7 @@ public class RecycleBoardController {
                                     @PathVariable Long recycleBoardId,
                                     @RequestBody UpdateRecycleBoardDto updateRecycleBoardDto) {
         Account user = accountService.findByAccountId(id);
-        ReadRecycleBoardDto readRecycleBoardDto = recycleBoardService.read(recycleBoardId);
-        if(readRecycleBoardDto.getWriter()==user){
+        if(recycleBoardService.readWriter(recycleBoardId)==user){
             recycleBoardService.update(recycleBoardId,updateRecycleBoardDto);
             return ResponseEntity.ok("게시글 수정완료");
         }
@@ -76,8 +75,7 @@ public class RecycleBoardController {
     @Operation(summary = "나눔 게시글 삭제", description = "자신이 작성한 나눔 게시글 삭제")
     public ResponseEntity<?> delete(@AuthorizationHeader Long id, @PathVariable Long recycleBoardId) {
         Account user = accountService.findByAccountId(id);
-        ReadRecycleBoardDto readRecycleBoardDto = recycleBoardService.read(recycleBoardId);
-        if(readRecycleBoardDto.getWriter()==user){
+        if(recycleBoardService.readWriter(recycleBoardId)==user){
             recycleBoardService.delete(recycleBoardId);
             return ResponseEntity.ok("게시글 삭제완료");
         }
@@ -91,8 +89,7 @@ public class RecycleBoardController {
     public ResponseEntity<?> finish(@AuthorizationHeader Long id,
                                     @PathVariable Long recycleBoardId) {
         Account user = accountService.findByAccountId(id);
-        ReadRecycleBoardDto readRecycleBoardDto = recycleBoardService.read(recycleBoardId);
-        if(readRecycleBoardDto.getWriter()==user){
+        if(recycleBoardService.readWriter(recycleBoardId)==user){
             recycleBoardService.finish(recycleBoardId);
             return ResponseEntity.ok("나눔 완료");
         }

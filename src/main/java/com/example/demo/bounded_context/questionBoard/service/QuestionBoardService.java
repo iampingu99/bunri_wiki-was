@@ -53,8 +53,10 @@ public class QuestionBoardService {
     }
 
     @Transactional
-    public List<QuestionBoard> readAll(){
-        return questionBoardRepository.findAll();
+    public Account readWriter(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId)
+                .orElseThrow(() -> new IllegalArgumentException("QUESTIONBOARD_NOT_FOUND"));
+        return questionBoard.getWriter();
     }
 
     //u

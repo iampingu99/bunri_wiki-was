@@ -55,10 +55,10 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/wiki/{id}/accepted",
-                                "/api/wiki/{id}/rejected",
-                                "/api/solution/{id}/accepted",
-                                "/api/solution{id}/rejected").hasRole("ADMIN")
+//                        .requestMatchers("/api/wiki/{id}/accepted",
+//                                "/api/wiki/{id}/rejected",
+//                                "/api/solution/{id}/accepted",
+//                                "/api/solution{id}/rejected").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .addFilterBefore(new JwtTokenFilter(jwtProvider, blacklistTokenService, objectMapper, accountService), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(withDefaults())

@@ -23,7 +23,7 @@ public class ReadQuestionBoardDto {
 
     private Integer view;
 
-    private Account writer;
+    private String writer;
 
     private String imageUrl;
 
@@ -36,7 +36,7 @@ public class ReadQuestionBoardDto {
         this.title = questionBoard.getTitle();
         this.content = questionBoard.getContent();
         this.recommend = questionBoard.getRecommend();
-        this.writer = questionBoard.getWriter();
+        this.writer = questionBoard.getWriter().getNickname();
         this.imageUrl=questionBoard.getImageUrl();
         this.adopted=questionBoard.isAdopted();
         this.comments=questionBoard.getComments().stream().map(QuestionCommentResponseDto::new).collect(Collectors.toList());

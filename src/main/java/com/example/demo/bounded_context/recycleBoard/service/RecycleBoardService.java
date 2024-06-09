@@ -50,6 +50,13 @@ public class RecycleBoardService {
     }
 
     @Transactional
+    public Account readWriter(Long recycleBoardId){
+        RecycleBoard recycleBoard = recycleBoardRepository.findById(recycleBoardId)
+                .orElseThrow(() -> new IllegalArgumentException("RECYCLEBOARD_NOT_FOUND"));
+        return recycleBoard.getWriter();
+    }
+
+    @Transactional
     public void update(Long recycleBoardId, UpdateRecycleBoardDto updateRecycleBoardDto){
         RecycleBoard recycleBoard = recycleBoardRepository.findById(recycleBoardId)
                 .orElseThrow(() -> new IllegalArgumentException("RECYCLEBOARD_NOT_FOUND"));

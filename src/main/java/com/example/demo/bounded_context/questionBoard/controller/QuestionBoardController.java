@@ -60,8 +60,7 @@ public class QuestionBoardController {
                                     @PathVariable Long questionBoardId,
                                     @RequestBody UpdateQuestionBoardDto updateQuestionBoardDto) {
         Account user = accountService.findByAccountId(id);
-        ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
-        if(readQuestionBoardDto.getWriter()==user){
+        if(questionBoardService.readWriter(questionBoardId)==user){
             questionBoardService.update(questionBoardId,updateQuestionBoardDto);
             return ResponseEntity.ok("게시글 수정완료");
         }
@@ -74,8 +73,7 @@ public class QuestionBoardController {
     @Operation(summary = "Q&A 게시글 삭제", description = "자신이 작성한 Q&A 게시글 삭제")
     public ResponseEntity<?> delete(@AuthorizationHeader Long id, @PathVariable Long questionBoardId) {
         Account user = accountService.findByAccountId(id);
-        ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
-        if(readQuestionBoardDto.getWriter()==user){
+        if(questionBoardService.readWriter(questionBoardId)==user){
             questionBoardService.delete(questionBoardId);
             return ResponseEntity.ok("게시글 삭제완료");
         }
@@ -91,7 +89,7 @@ public class QuestionBoardController {
                                       @PathVariable Long questionCommentId){
         Account user = accountService.findByAccountId(id);
         ReadQuestionBoardDto readQuestionBoardDto = questionBoardService.read(questionBoardId);
-        if(readQuestionBoardDto.getWriter()==user&& !readQuestionBoardDto.isAdopted()){
+        if(questionBoardService.readWriter(questionBoardId)==user&& !readQuestionBoardDto.isAdopted()){
             questionBoardService.adopting(questionBoardId,questionCommentId);
             return ResponseEntity.ok("댓글 채택 완료");
         }

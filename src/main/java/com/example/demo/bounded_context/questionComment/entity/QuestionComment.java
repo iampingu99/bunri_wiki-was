@@ -42,4 +42,8 @@ public class QuestionComment extends BaseTimeEntity {
     public void update(String content) {
         this.content = content;
     }
+
+    public void recommend(){ this.recommend++; }
+
+    public void unRecommend(){ this.recommend--; }
 }

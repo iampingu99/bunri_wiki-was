@@ -15,4 +15,6 @@ public class CreateRecycleBoardDto {
     private String shareTarget;
 
     private String location;
+
+    private String imageUrl;
 }

@@ -28,6 +28,8 @@ public class RecycleBoard extends BaseTimeEntity {
 
     private String shareTarget;
 
+    private String imageUrl;
+
     private String content;
 
     private String location;
@@ -45,7 +47,7 @@ public class RecycleBoard extends BaseTimeEntity {
     private Integer view;
 
     @Builder
-    public RecycleBoard(String title, String shareTarget, String content, String location, boolean collection, Account writer, Integer view){
+    public RecycleBoard(String title, String shareTarget, String content, String location, boolean collection, Account writer, Integer view, String imageUrl){
         this.title = title;
         this.shareTarget = shareTarget;
         this.content = content;
@@ -53,6 +55,7 @@ public class RecycleBoard extends BaseTimeEntity {
         this.collection = collection;
         this.writer = writer;
         this.view = view;
+        this.imageUrl=imageUrl;
     }
 
     public void finish() {
@@ -68,6 +71,7 @@ public class RecycleBoard extends BaseTimeEntity {
         this.content = updateRecycleBoardDto.getContent();
         this.shareTarget = updateRecycleBoardDto.getShareTarget();
         this.location = updateRecycleBoardDto.getLocation();
+        this.imageUrl=updateRecycleBoardDto.getImageUrl();
     }
 
 }

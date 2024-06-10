@@ -31,7 +31,7 @@ public class ReadQuestionBoardDto {
 
     private List<QuestionCommentResponseDto> comments;
 
-    private QuestionComment adoptedComment;
+    private QuestionCommentResponseDto adoptedComment;
     public ReadQuestionBoardDto(QuestionBoard questionBoard) {
         this.title = questionBoard.getTitle();
         this.content = questionBoard.getContent();
@@ -40,7 +40,7 @@ public class ReadQuestionBoardDto {
         this.imageUrl=questionBoard.getImageUrl();
         this.adopted=questionBoard.isAdopted();
         this.comments=questionBoard.getComments().stream().map(QuestionCommentResponseDto::new).collect(Collectors.toList());
-        this.adoptedComment=questionBoard.getAdoptedComment();
+        this.adoptedComment=new QuestionCommentResponseDto(questionBoard.getAdoptedComment());
         this.view=questionBoard.getView();
     }
 

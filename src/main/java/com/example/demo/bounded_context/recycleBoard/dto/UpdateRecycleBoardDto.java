@@ -15,4 +15,6 @@ public class UpdateRecycleBoardDto {
     private String shareTarget;
 
     private String location;
+
+    private String imageUrl;
 }

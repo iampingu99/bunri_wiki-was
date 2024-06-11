@@ -32,6 +32,7 @@ public class RecycleBoardService {
                 .content(createRecycleBoardDto.getContent())
                 .shareTarget(createRecycleBoardDto.getShareTarget())
                 .location(createRecycleBoardDto.getLocation())
+                .imageUrl(createRecycleBoardDto.getImageUrl())
                 .collection(false)
                 .writer(writer)
                 .view(0)

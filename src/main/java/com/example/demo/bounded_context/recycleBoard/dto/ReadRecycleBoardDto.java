@@ -28,6 +28,8 @@ public class ReadRecycleBoardDto {
 
     private String shareTarget;
 
+    private String imageUrl;
+
     private boolean collection;
 
     private List<RecycleCommentResponseDto> comments;
@@ -44,5 +46,6 @@ public class ReadRecycleBoardDto {
         this.view=recycleBoard.getView();
         this.createdDate=recycleBoard.getCreatedDate();
         this.comments=recycleBoard.getComments().stream().map(RecycleCommentResponseDto::new).collect(Collectors.toList());
+        this.imageUrl=recycleBoard.getImageUrl();
     }
 }

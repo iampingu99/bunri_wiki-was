@@ -1,6 +1,7 @@
 package com.example.demo.bounded_context.wiki.service;
 
 import com.example.demo.bounded_context.wiki.dto.ContributeModificationsResponse;
+import com.example.demo.bounded_context.wiki.dto.WikiListResponse;
 import com.example.demo.bounded_context.wiki.entity.Wiki;
 import com.example.demo.bounded_context.wiki.entity.WikiState;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +20,10 @@ public class WikiUseCase {
                                                                           Pageable pageable){
         Page<Wiki> modifications = wikiService.findByAccountIdAndState(accountId, state, pageable);
         return modifications.map(ContributeModificationsResponse::fromEntity);
+    }
+
+    public Page<WikiListResponse> readAll(Long wasteId, Pageable pageable){
+        Page<Wiki> wikiList = wikiService.findByWasteId(wasteId, pageable);
+        return wikiList.map(WikiListResponse::fromEntity);
     }
 }

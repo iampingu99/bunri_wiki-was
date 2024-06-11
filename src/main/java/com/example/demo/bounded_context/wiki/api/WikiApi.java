@@ -1,12 +1,16 @@
 package com.example.demo.bounded_context.wiki.api;
 
 import com.example.demo.base.Resolver.AuthorizationHeader;
+import com.example.demo.bounded_context.wiki.dto.WikiListResponse;
 import com.example.demo.bounded_context.wiki.dto.WikiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +61,11 @@ public interface WikiApi {
                     }))
     })
     ResponseEntity<?> read(@PathVariable("wikiId") Long wikiId);
+
+    @GetMapping("/api/solution/{wasteId}/wiki")
+    @Operation(summary = "솔루션의 위키 목록 조회", description = "모든 사용자는 해당 솔루션의 위키 목록을 조회할 수 있다.")
+    ResponseEntity<Page<WikiListResponse>> readAll(@PathVariable("wasteId") Long wasteId,
+                                                   @PageableDefault(page = 0, size = 10) Pageable pageable);
 
     @DeleteMapping("/api/wiki/{wikiId}")
     @Operation(summary = "위키 정보 삭제", description = "로그인한 사용자 중 위키의 작성자는 위키 요청이 수락 또는 거부되기 전에 생성한 위키 요청를 삭제할 수 있다.")

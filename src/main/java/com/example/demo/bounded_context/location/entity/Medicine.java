@@ -21,12 +21,4 @@ public class Medicine {
     String subAddress;
     Double latitude;
     Double longitude;
-
-    public LocationResponse of(){
-        return LocationResponse.builder()
-                .address(address)
-                .latitude(latitude)
-                .longitude(longitude)
-                .build();
-    }
 }

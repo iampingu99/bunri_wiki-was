@@ -7,6 +7,7 @@ import com.example.demo.bounded_context.questionComment.entity.QuestionComment;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -40,7 +41,9 @@ public class ReadQuestionBoardDto {
         this.imageUrl=questionBoard.getImageUrl();
         this.adopted=questionBoard.isAdopted();
         this.comments=questionBoard.getComments().stream().map(QuestionCommentResponseDto::new).collect(Collectors.toList());
-        this.adoptedComment=new QuestionCommentResponseDto(questionBoard.getAdoptedComment());
+        this.adoptedComment= Optional.ofNullable(questionBoard.getAdoptedComment())
+                .map(QuestionCommentResponseDto::new)
+                .orElse(null);
         this.view=questionBoard.getView();
     }
 

@@ -55,7 +55,7 @@ public class S3ImageService {
         }
 
         String extension = fileName.substring(lastDotIndex + 1).toLowerCase();
-        if (imgExtension.contains(extension)) {
+        if (!imgExtension.contains(extension)) {
             throw new IllegalArgumentException("INVALID_FILE_EXTENSION : 파일의 확장자가 유효하지 않습니다.");
         }
         return extension;

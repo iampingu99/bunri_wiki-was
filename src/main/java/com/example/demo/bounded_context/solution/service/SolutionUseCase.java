@@ -12,6 +12,7 @@ import com.example.demo.bounded_context.solution.dto.SolutionRequest;
 import com.example.demo.bounded_context.solution.dto.SolutionListResponse;
 import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.entity.Waste;
+import com.example.demo.bounded_context.solution.util.CategoryProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,9 @@ public class SolutionUseCase {
         log.info("솔루션 이미지 검색");
         DetectRequest request = DetectRequest.fromEntity(imageUrl);
         DetectResponse detectResponse = detectService.imageDetection(request);
+        for(DetectResponse.DetectResult result : detectResponse.getResult()){
+            result.setImageUrl(CategoryProvider.categoryMapper.get(result.getName()));
+        }
         return detectResponse;
     }
 

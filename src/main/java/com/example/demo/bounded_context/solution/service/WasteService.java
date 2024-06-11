@@ -78,4 +78,9 @@ public class WasteService {
         foundWaste.reject();
         return foundWaste;
     }
+
+    @Transactional
+    public void updateWriter(Account writer){
+        wasteRepository.updateWriter(writer);
+    }
 }

@@ -28,6 +28,11 @@ public class WikiService {
     private final WasteService wasteService;
 
     @Transactional(readOnly = true)
+    public Page<Wiki> findByWasteId(Long wasteId, Pageable pageable){
+        return wikiRepository.findByWasteId(wasteId, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public Wiki findByWikiId(Long wikiId){
         log.trace("select proxy wiki by id");
         return wikiRepository.findById(wikiId)

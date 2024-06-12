@@ -14,9 +14,14 @@ public class DetectResponse {
     @Getter
     public static class DetectResult {
         private String name;
+        private String imageUrl;
         @JsonProperty("class")
         private String className;
         private double confidence;
         private Map<String, Double> box;
+
+        public void setImageUrl(String imageUrl){
+            this.imageUrl = imageUrl;
+        }
     }
 }

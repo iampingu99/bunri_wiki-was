@@ -4,12 +4,17 @@ import com.example.demo.base.Resolver.AuthorizationHeader;
 import com.example.demo.bounded_context.wiki.api.WikiApi;
 import com.example.demo.bounded_context.account.service.AccountService;
 import com.example.demo.bounded_context.wiki.dto.WikiCompareResponse;
+import com.example.demo.bounded_context.wiki.dto.WikiListResponse;
 import com.example.demo.bounded_context.wiki.dto.WikiRequest;
 import com.example.demo.bounded_context.wiki.entity.Wiki;
 import com.example.demo.bounded_context.wiki.service.WikiService;
 import com.example.demo.bounded_context.solution.service.WasteService;
+import com.example.demo.bounded_context.wiki.service.WikiUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +26,7 @@ public class WikiController implements WikiApi {
     private final WasteService wasteService;
     private final WikiService wikiService;
     private final AccountService accountService;
+    private final WikiUseCase wikiUseCase;
 
     /**
      * [o] 반영중인 위키 검사
@@ -40,6 +46,12 @@ public class WikiController implements WikiApi {
      */
     public ResponseEntity<WikiCompareResponse> read(@PathVariable("wikiId") Long wikiId){
         WikiCompareResponse response = wikiService.read(wikiId);
+        return ResponseEntity.ok().body(response);
+    }
+
+    public ResponseEntity<Page<WikiListResponse>> readAll(@PathVariable("wasteId") Long wasteId,
+                                                          @PageableDefault(page = 0, size = 10) Pageable pageable){
+        Page<WikiListResponse> response = wikiUseCase.readAll(wasteId, pageable);
         return ResponseEntity.ok().body(response);
     }
 

@@ -7,6 +7,7 @@ import com.example.demo.base.refresh_token.RefreshTokenService;
 import com.example.demo.bounded_context.account.dto.AccountResponse;
 import com.example.demo.bounded_context.account.dto.AccountUpdateRequest;
 import com.example.demo.bounded_context.account.entity.Account;
+import com.example.demo.bounded_context.solution.service.WasteService;
 import com.example.demo.bounded_context.wiki.service.WikiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class AccountUseCase {
     private final RefreshTokenService refreshTokenService;
     private final BlacklistTokenService blacklistTokenService;
     private final WikiService wikiService;
+    private final WasteService wasteService;
 
     @Transactional(readOnly = true)
     public AccountResponse read(Long accountId){
@@ -44,8 +46,10 @@ public class AccountUseCase {
 
     /**
      * 회원탈퇴
-     * 1. refresh token 삭제
-     * 2. account 삭제 - account 를 조회할 수 없으므로 access token 정보로 blacklist token 생성하지 않아도 된다.
+     * 1. 위키 작성자 null
+     * 2. 솔루션 작성자 null
+     * 3. refresh token 삭제
+     * 4. account 삭제 - account 를 조회할 수 없으므로 access token 정보로 blacklist token 생성하지 않아도 된다.
      */
     @Transactional
     public void withdrawal(AccessToken accessToken, String refreshToken){
@@ -54,6 +58,8 @@ public class AccountUseCase {
         Account foundAccount = accountService.findByAccountId(refresh.getAccountId());
 
         wikiService.updateWriter(foundAccount);
+        wasteService.updateWriter(foundAccount);
+
         refreshTokenService.delete(refresh.getAccountId());
         accountService.delete(foundAccount);
     }

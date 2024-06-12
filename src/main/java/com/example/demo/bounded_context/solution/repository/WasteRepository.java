@@ -1,10 +1,12 @@
 package com.example.demo.bounded_context.solution.repository;
 
+import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.solution.entity.ContributedCreationState;
 import com.example.demo.bounded_context.solution.entity.Waste;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -52,4 +54,8 @@ public interface WasteRepository extends JpaRepository<Waste, Long> {
      */
     @Query("select distinct w from Waste w join w.categories m left join w.tags WHERE SIZE(w.categories) = 1 and m.name = :name and w.state = 1")
     Page<Waste> findByCategoriesName(String name, Pageable pageable);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Waste w set w.writer = null where w.writer = :account")
+    void updateWriter(Account account);
 }

@@ -32,4 +32,7 @@ public interface WikiRepository extends JpaRepository<Wiki, Long> {
 
     @Query("select w from Wiki w where w.writer.id = :accountId and w.wikiState = :state")
     Page<Wiki> findByAccountIdAndStateWithPaging(Long accountId, WikiState state, Pageable pageable);
+
+    @Query("select w from Wiki w left join fetch w.writer join fetch w.waste where w.waste.id = :wasteId order by w.createdDate DESC")
+    Page<Wiki> findByWasteId(Long wasteId, Pageable pageable);
 }

@@ -14,7 +14,8 @@ import java.util.Optional;
 public record SolutionResponse(
         Long accountId,
         String accountNickName,
-        String solutionName,
+        Long wasteId,
+        String name,
         String imageUrl,
         List<String> categories,
         List<String> tags,
@@ -30,6 +31,7 @@ public record SolutionResponse(
                 Optional.ofNullable(writer)
                         .map(Account::getAccountName)
                         .orElse(null),
+                waste.getId(),
                 waste.getName(),
                 waste.getImageUrl(),
                 waste.getCategories().stream().map(Category::getName).toList(),

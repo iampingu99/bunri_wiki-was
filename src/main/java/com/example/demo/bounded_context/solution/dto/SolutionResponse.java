@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Schema(name = "SolutionResponse", description = "솔루션 조회 DTO")
 public record SolutionResponse(
-        Long writerId,
-        String writerNickName,
+        Long accountId,
+        String accountNickName,
         String solutionName,
         String imageUrl,
         List<String> categories,

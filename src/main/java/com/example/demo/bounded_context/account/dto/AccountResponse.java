@@ -3,6 +3,7 @@ package com.example.demo.bounded_context.account.dto;
 import com.example.demo.bounded_context.account.entity.Account;
 
 public record AccountResponse(
+        Long accountId,
         String accountName,
         String email,
         String nickname,
@@ -13,6 +14,7 @@ public record AccountResponse(
 ) {
         public static AccountResponse fromEntity(Account account) {
             return new AccountResponse(
+                    account.getId(),
                     account.getAccountName(),
                     account.getEmail(),
                     account.getNickname(),

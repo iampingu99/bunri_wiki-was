@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 @Schema(name = "ContributeCreationListResponse", description = "사용자 생성 요청 목록 DTO")
 public record ContributeCreationListResponse(
-        Long wastId,
+        Long wasteId,
         String nickName,
-        String name,
-        ContributedCreationState contributedCreationState,
+        String wasteName,
+        ContributedCreationState state,
         LocalDateTime createdDate
 ) {
     public static ContributeCreationListResponse fromEntity(Waste waste){

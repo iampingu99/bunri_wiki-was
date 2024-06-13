@@ -9,17 +9,22 @@ import java.util.Optional;
 
 public record WikiListResponse(
         Long wikiId,
-        String authorNickName,
+        String writerNickname,
+        Long writerId,
         String wasteName,
         WikiState wikiState,
         LocalDateTime createdDate,
         LocalDateTime modifiedDate
 ) {
     public static WikiListResponse fromEntity(Wiki wiki){
+        Account writer = wiki.getWriter();
         return new WikiListResponse(
                 wiki.getId(),
-                Optional.ofNullable(wiki.getWriter())
+                Optional.ofNullable(writer)
                         .map(Account::getAccountName)
+                        .orElse(null),
+                Optional.ofNullable(writer)
+                        .map(Account::getId)
                         .orElse(null),
                 wiki.getWaste().getName(),
                 wiki.getWikiState(),

@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public record WikiListResponse(
         Long wikiId,
-        String writerNickname,
-        Long writerId,
+        String accountNickname,
+        Long accountId,
         String wasteName,
         WikiState wikiState,
         LocalDateTime createdDate,

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public record WikiResponse (
-        String writerName,
-        Long writerId,
+        Long accountId,
+        String accountNickname,
         String wasteName,
         String categories,
         String tags,
@@ -22,10 +22,10 @@ public record WikiResponse (
         Account writer = wiki.getWriter();
         return new WikiResponse(
                 Optional.ofNullable(writer)
-                        .map(Account::getAccountName)
+                        .map(Account::getId)
                         .orElse(null),
                 Optional.ofNullable(writer)
-                        .map(Account::getId)
+                        .map(Account::getAccountName)
                         .orElse(null),
                 wiki.getWaste().getName(),
                 wiki.getCategories(),

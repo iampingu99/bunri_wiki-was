@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(name = "ContributeCreationListResponse", description = "사용자 생성 요청 목록 DTO")
 public record ContributeCreationListResponse(
         Long wasteId,
-        String nickName,
+        String accountNickName,
         String wasteName,
         ContributedCreationState state,
         LocalDateTime createdDate

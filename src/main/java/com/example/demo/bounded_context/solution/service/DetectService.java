@@ -29,10 +29,7 @@ public class DetectService {
                 .bodyValue(request)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
-                    throw new RuntimeException("4xx");
-                })
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
-                    throw new RuntimeException("5xx");
+                    throw new RuntimeException("이미지 검색에 실패했습니다.");
                 })
                 .bodyToMono(DetectResponse.class)
                 .block();

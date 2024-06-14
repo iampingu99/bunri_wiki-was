@@ -22,8 +22,13 @@ public class WikiUseCase {
         return modifications.map(ContributeModificationsResponse::fromEntity);
     }
 
-    public Page<WikiListResponse> readAll(Long wasteId, Pageable pageable){
+    public Page<WikiListResponse> readByWasteId(Long wasteId, Pageable pageable){
         Page<Wiki> wikiList = wikiService.findByWasteId(wasteId, pageable);
+        return wikiList.map(WikiListResponse::fromEntity);
+    }
+
+    public Page<WikiListResponse> readAll(Pageable pageable){
+        Page<Wiki> wikiList = wikiService.findAll(pageable);
         return wikiList.map(WikiListResponse::fromEntity);
     }
 }

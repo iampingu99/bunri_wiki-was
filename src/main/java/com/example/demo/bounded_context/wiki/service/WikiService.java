@@ -33,6 +33,11 @@ public class WikiService {
     }
 
     @Transactional(readOnly = true)
+    public Page<Wiki> findAll(Pageable pageable){
+        return wikiRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
     public Wiki findByWikiId(Long wikiId){
         log.trace("select proxy wiki by id");
         return wikiRepository.findById(wikiId)

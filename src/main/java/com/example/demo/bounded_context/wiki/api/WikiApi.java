@@ -64,8 +64,12 @@ public interface WikiApi {
 
     @GetMapping("/api/solution/{wasteId}/wiki")
     @Operation(summary = "솔루션의 위키 목록 조회", description = "모든 사용자는 해당 솔루션의 위키 목록을 조회할 수 있다.")
-    ResponseEntity<Page<WikiListResponse>> readAll(@PathVariable("wasteId") Long wasteId,
-                                                   @PageableDefault(page = 0, size = 10) Pageable pageable);
+    ResponseEntity<Page<WikiListResponse>> readByWasteId(@PathVariable("wasteId") Long wasteId,
+                                                         @PageableDefault(page = 0, size = 10) Pageable pageable);
+
+    @GetMapping("/api/wiki")
+    @Operation(summary = "모든 위키 목록 조회", description = "관리자는 모든 위키 목록을 조회할 수 있다.")
+    ResponseEntity<Page<WikiListResponse>> readAll(@PageableDefault(page = 0, size = 10) Pageable pageable);
 
     @DeleteMapping("/api/wiki/{wikiId}")
     @Operation(summary = "위키 정보 삭제", description = "로그인한 사용자 중 위키의 작성자는 위키 요청이 수락 또는 거부되기 전에 생성한 위키 요청를 삭제할 수 있다.")

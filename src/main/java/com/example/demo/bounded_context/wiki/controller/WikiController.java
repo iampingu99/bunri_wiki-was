@@ -10,7 +10,6 @@ import com.example.demo.bounded_context.wiki.entity.Wiki;
 import com.example.demo.bounded_context.wiki.service.WikiService;
 import com.example.demo.bounded_context.solution.service.WasteService;
 import com.example.demo.bounded_context.wiki.service.WikiUseCase;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,9 +48,14 @@ public class WikiController implements WikiApi {
         return ResponseEntity.ok().body(response);
     }
 
-    public ResponseEntity<Page<WikiListResponse>> readAll(@PathVariable("wasteId") Long wasteId,
+    public ResponseEntity<Page<WikiListResponse>> readByWasteId(@PathVariable("wasteId") Long wasteId,
                                                           @PageableDefault(page = 0, size = 10) Pageable pageable){
-        Page<WikiListResponse> response = wikiUseCase.readAll(wasteId, pageable);
+        Page<WikiListResponse> response = wikiUseCase.readByWasteId(wasteId, pageable);
+        return ResponseEntity.ok().body(response);
+    }
+
+    public ResponseEntity<Page<WikiListResponse>> readAll(@PageableDefault(page = 0, size = 10) Pageable pageable){
+        Page<WikiListResponse> response = wikiUseCase.readAll(pageable);
         return ResponseEntity.ok().body(response);
     }
 

@@ -18,8 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class QuestionBoardService {
@@ -100,6 +98,24 @@ public class QuestionBoardService {
         }
         else{
             questionBoardPages = questionBoardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "view","createdDate")));
+        }
+
+        return questionBoardPages.map(
+                PageQuestionBoardDto::new);
+    }
+
+    public Page<PageQuestionBoardDto> search(Pageable pageable, Integer option, String keyword) {
+        int page = pageable.getPageNumber() - 1; // page 위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 10; // 한페이지에 보여줄 글 개수
+        Page<QuestionBoard> questionBoardPages;
+        if(option==1) {
+            questionBoardPages = questionBoardRepository.findByTitleContaining(keyword,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdDate")));
+        }
+        else if(option==2){
+            questionBoardPages = questionBoardRepository.findByTitleContaining(keyword,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "recommend","createdDate")));
+        }
+        else{
+            questionBoardPages = questionBoardRepository.findByTitleContaining(keyword,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "view","createdDate")));
         }
 
         return questionBoardPages.map(

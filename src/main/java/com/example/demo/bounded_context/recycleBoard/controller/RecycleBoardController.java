@@ -56,6 +56,19 @@ public class RecycleBoardController {
         return ResponseEntity.ok(boardPages);
     }
 
+    @GetMapping("/search/{option}/paging")
+    @Operation(summary = "나눔 게시글 검색", description = "/search/{option}/paging?page=번호(1~),{option}1-최신순,2-조회순")
+    public ResponseEntity<?> searchPage(@PageableDefault(page = 1) Pageable pageable,
+                                        @PathVariable Integer option,
+                                        @RequestBody String keyword) {
+        if(keyword==null)
+            return ResponseEntity.ok("검색할 키워드를 입력해주세요");
+
+        Page<PageRecycleBoardDto> boardPages = recycleBoardService.search(pageable,option,keyword);
+
+        return ResponseEntity.ok(boardPages);
+    }
+
     @PutMapping("/update/{recycleBoardId}") // - 게시글 업데이트
     @Operation(summary = "나눔 게시글 수정", description = "자신이 작성한 나눔 게시글 수정")
     public ResponseEntity<?> update(@AuthorizationHeader Long id,

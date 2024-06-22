@@ -5,6 +5,7 @@ import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.questionBoard.dto.UpdateQuestionBoardDto;
 import com.example.demo.bounded_context.questionComment.entity.QuestionComment;
+import com.example.demo.bounded_context.recommendBoard.entity.RecommendBoard;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,6 +38,9 @@ public class QuestionBoard extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "questionBoard", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //게시글 삭제시 삭제
     private List<QuestionComment> comments;
+
+    @OneToMany(mappedBy = "questionBoard", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //게시글 삭제시 삭제
+    private List<RecommendBoard> recommendBoardList;
 
     @JoinColumn(name = "QUESTION_WRITER_ID", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)

@@ -11,6 +11,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
+                .openapi("3.0.1") // OpenAPI 버전 명시
                 .components(new Components())
                 .info(apiInfo());
     }

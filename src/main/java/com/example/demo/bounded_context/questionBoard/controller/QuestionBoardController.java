@@ -46,10 +46,22 @@ public class QuestionBoardController {
 
     // @PageableDefault(page = 1) : page는 기본으로 1페이지를 보여준다.
     @GetMapping("/read/{option}/paging")
-    @Operation(summary = "Q&A 게시글 페이징", description = "/read/paging?page=번호(1~),{option}1-최신순,2-추천순,3-조회순")
+    @Operation(summary = "Q&A 게시글 페이징", description = "/read/option/paging?page=번호(1~),{option}1-최신순,2-추천순,3-조회순")
     public ResponseEntity<?> readPage(@PageableDefault(page = 1) Pageable pageable,
                                       @PathVariable Integer option) {
         Page<PageQuestionBoardDto> boardPages = questionBoardService.paging(pageable,option);
+
+        return ResponseEntity.ok(boardPages);
+    }
+
+    @GetMapping("/search/{option}/paging")
+    @Operation(summary = "Q&A 게시글 검색", description = "/search/option/paging?page=번호(1~),{option}1-최신순,2-추천순,3-조회순")
+    public ResponseEntity<?> searchPage(@PageableDefault(page = 1) Pageable pageable,
+                                        @PathVariable Integer option,
+                                        @RequestBody String keyword) {
+        if(keyword==null)
+            return ResponseEntity.ok("검색할 키워드를 입력해주세요");
+        Page<PageQuestionBoardDto> boardPages = questionBoardService.search(pageable,option,keyword);
 
         return ResponseEntity.ok(boardPages);
     }

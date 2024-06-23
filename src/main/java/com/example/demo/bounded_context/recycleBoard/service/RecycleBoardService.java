@@ -97,5 +97,20 @@ public class RecycleBoardService {
                 PageRecycleBoardDto::new);
     }
 
+    public Page<PageRecycleBoardDto> search(Pageable pageable, Integer option, String keyword) {
+        int page = pageable.getPageNumber() - 1; // page 위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 10; // 한페이지에 보여줄 글 개수
+        Page<RecycleBoard> recycleBoardPages;
+        if(option==1) {
+            recycleBoardPages = recycleBoardRepository.findByTitleContaining(keyword,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdDate")));
+        }
+        else{
+            recycleBoardPages = recycleBoardRepository.findByTitleContaining(keyword,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "view","createdDate")));
+        }
+
+        return recycleBoardPages.map(
+                PageRecycleBoardDto::new);
+    }
+
 
 }

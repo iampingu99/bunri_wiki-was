@@ -3,11 +3,14 @@ package com.example.demo.bounded_context.questionComment.entity;
 import com.example.demo.base.common.BaseTimeEntity;
 import com.example.demo.bounded_context.account.entity.Account;
 import com.example.demo.bounded_context.questionBoard.entity.QuestionBoard;
+import com.example.demo.bounded_context.recommendComment.entity.RecommendComment;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -30,6 +33,9 @@ public class QuestionComment extends BaseTimeEntity {
     @JoinColumn(name = "COMMENT_WRITER_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Account writer;
+
+    @OneToMany(mappedBy = "questionComment", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //게시글 삭제시 삭제
+    private List<RecommendComment> recommendCommentList;
 
     @Builder
     public QuestionComment(String content, Integer recommend, QuestionBoard questionBoard, Account writer){

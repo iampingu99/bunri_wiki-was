@@ -77,7 +77,8 @@ public class WikiService {
     public WikiCompareResponse read(Long wikiId){
         log.info("위키 정보 조회");
         Wiki foundWiki = findFetchByWikiId(wikiId);
-        WikiResponse origin = foundWiki.getOriginal() == null ? null : WikiResponse.fromEntity(foundWiki.getOriginal());
+        WikiResponse origin = foundWiki.getOriginal() == null ? WikiResponse.fromEntity(wasteService.findFetchById(foundWiki.getWaste().getId()))
+                : WikiResponse.fromEntity(foundWiki.getOriginal());
         WikiResponse modified = WikiResponse.fromEntity(foundWiki);
         return WikiCompareResponse.of(origin, modified);
     }

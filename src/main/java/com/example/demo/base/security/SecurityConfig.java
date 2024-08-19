@@ -34,9 +34,6 @@ public class SecurityConfig {
     private final BlacklistTokenService blacklistTokenService;
     private final AccountService accountService;
 
-    @Value("${server.front}")
-    private String corsUrl;
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,7 +41,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Arrays.asList(corsUrl, "http://localhost:3000"));
+                        config.setAllowedOriginPatterns(Collections.singletonList("*"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowedHeaders(Collections.singletonList("*"));
                         config.setExposedHeaders(Collections.singletonList("*"));

@@ -3,7 +3,7 @@
 [![AI](https://img.shields.io/badge/Repository/AI-navy?style=flat-square&logo=python&logoColor=white)](https://github.com/BUNRI-WIKI/project-extension)
 
 <p align="center">
-  <img width="204" height="57" alt="LOGO" src="https://github.com/user-attachments/assets/cff1a0af-324e-462e-94ad-f9d3d61dfb8f" />
+	<img width="204" height="57" alt="LOGO" src="https://github.com/user-attachments/assets/cff1a0af-324e-462e-94ad-f9d3d61dfb8f" />
 </p>
 
 ## ✨ 소개
@@ -11,7 +11,9 @@
 키워드와 이미지를 기반으로 배출 정보를 검색할 수 있고 부족한 정보를 채워나갈 수 있는 위키 플랫폼을 제작하게 되었습니다.
 
 ## 🫶 서비스 사용법
-<img width="1281" height="2430" alt="main" src="https://github.com/user-attachments/assets/aeed3aae-66c7-4121-b976-677d7cafdce1" />
+<p align="center">
+	<img width="640" height="1214" alt="소개" src="https://github.com/user-attachments/assets/2f920742-18ed-4b34-9e55-4f52f0af3e78" />
+</p>
 
 
 ## 🛠️ TECH
